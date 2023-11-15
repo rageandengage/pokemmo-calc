@@ -346,146 +346,24 @@ export const MEGA_STONES: {[species: string]: string} = {
 
 const XY = BW.concat(
   [
-    ...Object.keys(MEGA_STONES),
-    'Assault Vest',
-    'Assault Gear',
-    'Blue Orb',
-    'Fairy Gem',
-    'Jaw Fossil',
-    'Kee Berry',
-    'Luminous Moss',
-    'Maranga Berry',
-    'Pixie Plate',
-    'Red Orb',
-    'Roseli Berry',
-    'Sachet',
-    'Safety Goggles',
-    'Sail Fossil',
-    'Snowball',
-    'Weakness Policy',
-    'Whipped Dream',
+    'Assault Gear', // backported
   ].sort()
 );
 
-const SM = XY.filter(i => i !== 'Old Amber').concat([
-  'Adrenaline Orb',
-  'Aloraichium Z',
-  'Beast Ball',
-  'Bottle Cap',
-  'Bug Memory',
-  'Buginium Z',
-  'Dark Memory',
-  'Darkinium Z',
-  'Decidium Z',
-  'Dragon Memory',
-  'Dragonium Z',
-  'Eevium Z',
-  'Electric Memory',
-  'Electric Seed',
-  'Electrium Z',
-  'Fairium Z',
-  'Fairy Memory',
-  'Fighting Memory',
-  'Fightinium Z',
-  'Fire Memory',
-  'Firium Z',
-  'Flying Memory',
-  'Flyinium Z',
-  'Ghost Memory',
-  'Ghostium Z',
-  'Gold Bottle Cap',
-  'Grass Memory',
-  'Grassium Z',
-  'Grassy Seed',
-  'Ground Memory',
-  'Groundium Z',
-  'Ice Memory',
-  'Ice Stone',
-  'Icium Z',
-  'Incinium Z',
-  'Kommonium Z',
-  'Lunalium Z',
-  'Lycanium Z',
-  'Marshadium Z',
-  'Mewnium Z',
-  'Mimikium Z',
-  'Misty Seed',
-  'Normalium Z',
-  'Pikanium Z',
-  'Pikashunium Z',
-  'Poison Memory',
-  'Poisonium Z',
-  'Primarium Z',
-  'Protective Pads',
-  'Psychic Memory',
-  'Psychic Seed',
-  'Psychium Z',
-  'Rock Memory',
-  'Rockium Z',
-  'Snorlium Z',
-  'Solganium Z',
-  'Steel Memory',
-  'Steelium Z',
-  'Tapunium Z',
-  'Terrain Extender',
-  'Ultranecrozium Z',
-  'Water Memory',
-  'Waterium Z',
-]);
+const SM = XY.concat(
+  [
+  ].sort()
+);
 
-const SS = SM.concat([
-  'Berry Sweet',
-  'Blunder Policy',
-  'Chipped Pot',
-  'Clover Sweet',
-  'Cracked Pot',
-  'Eject Pack',
-  'Flower Sweet',
-  'Fossilized Bird',
-  'Fossilized Dino',
-  'Fossilized Drake',
-  'Fossilized Fish',
-  'Galarica Cuff',
-  'Galarica Wreath',
-  'Heavy-Duty Boots',
-  'Leek',
-  'Love Sweet',
-  'Ribbon Sweet',
-  'Room Service',
-  'Rusted Shield',
-  'Rusted Sword',
-  'Star Sweet',
-  'Strawberry Sweet',
-  'Sweet Apple',
-  'Tart Apple',
-  'Throat Spray',
-]);
+const SS = SM.concat(
+  [
+  ].sort()
+);
 
-for (let i = 0; i < 100; i++) {
-  SS.push(`TR${i < 10 ? `0${i}` : i}`);
-}
-
-// Added after the TRs to maintain sort order
-SS.push('Utility Umbrella', 'Vile Vial');
-
-// Because we support National Dex all Past items are added back in
-SS.push(...GSC_ONLY, 'Old Amber');
-
-const SV = SS.concat([
-  'Adamant Crystal',
-  'Auspicious Armor',
-  'Ability Shield',
-  'Booster Energy',
-  'Clear Amulet',
-  'Covert Cloak',
-  'Loaded Dice',
-  'Malicious Armor',
-  'Mirror Herb',
-  'Punching Glove',
-  'Lustrous Globe',
-  'Griseous Core',
-  'Strange Ball',
-]);
+const SV = SS.concat(
+  [
+  ].sort()
+);
 
 const BERRIES: {[berry: string]: {t: I.TypeName; p: number}} = {
   'Aguav Berry': {t: 'Dragon', p: 80},
