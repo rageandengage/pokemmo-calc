@@ -72,4 +72,3 @@ makeCachebuster('dist/index.template.html', 'dist/index.html');
 // Delete the .template.html files
 deleteFile('dist/honkalculate.template.html');
 deleteFile('dist/index.template.html');
-deleteFile('dist/randoms.template.html');
