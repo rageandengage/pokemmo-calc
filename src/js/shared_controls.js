@@ -547,7 +547,7 @@ $(".set-selector").change(function () {
 			if (isAttackSet) {
 				pokeObj.find(".nature").val("Brave");
 				pokeObj.find(".at .evs").val(252);
-				pokeObj.find(".sp .evs").val(252);
+				pokeObj.find(".sa .evs").val(252);
 				itemObj.val("Expert Belt");
 			} else {
 				pokeObj.find(".nature").val("Hardy");
