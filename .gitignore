@@ -7,3 +7,5 @@ Thumbs.db
 pnpm-debug.log
 npm-debug.log
 .idea/
+deploy.sh
+update.sh
