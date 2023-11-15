@@ -67,8 +67,8 @@ function legacyStatToStat(st) {
 
 // input field validation
 var bounds = {
-	"level": [0, 100],
-	"base": [1, 255],
+	"level": [1, 100],
+	"base": [1, 32767],
 	"evs": [0, 252],
 	"ivs": [0, 31],
 	"dvs": [0, 15],
