@@ -110,11 +110,11 @@ export function calculateADV(
   }
 
   if ((defender.hasAbility('Flash Fire') && move.hasType('Fire')) ||
-      (defender.hasAbility('Levitate') && move.hasType('Ground')) ||
-      (defender.hasAbility('Volt Absorb') && move.hasType('Electric')) ||
-      (defender.hasAbility('Water Absorb') && move.hasType('Water')) ||
-      (defender.hasAbility('Wonder Guard') && !move.hasType('???') && typeEffectiveness <= 1) ||
-      (defender.hasAbility('Soundproof') && move.flags.sound)
+    (defender.hasAbility('Levitate') && move.hasType('Ground')) ||
+    (defender.hasAbility('Volt Absorb') && move.hasType('Electric')) ||
+    (defender.hasAbility('Water Absorb') && move.hasType('Water')) ||
+    (defender.hasAbility('Wonder Guard') && !move.hasType('???') && typeEffectiveness <= 1) ||
+    (defender.hasAbility('Soundproof') && move.flags.sound)
   ) {
     desc.defenderAbility = defender.ability;
     return result;
@@ -224,16 +224,16 @@ export function calculateADV(
   }
 
   if ((isPhysical &&
-        (attacker.hasAbility('Hustle') || (attacker.hasAbility('Guts') && attacker.status))) ||
-      (!isPhysical && attacker.abilityOn && attacker.hasAbility('Plus', 'Minus'))
+      (attacker.hasAbility('Hustle') || (attacker.hasAbility('Guts') && attacker.status))) ||
+    (!isPhysical && attacker.abilityOn && attacker.hasAbility('Plus', 'Minus'))
   ) {
     at = Math.floor(at * 1.5);
     desc.attackerAbility = attacker.ability;
   } else if (attacker.curHP() <= attacker.maxHP() / 3 &&
     ((attacker.hasAbility('Overgrow') && move.hasType('Grass')) ||
-     (attacker.hasAbility('Blaze') && move.hasType('Fire')) ||
-     (attacker.hasAbility('Torrent') && move.hasType('Water')) ||
-     (attacker.hasAbility('Swarm') && move.hasType('Bug')))
+      (attacker.hasAbility('Blaze') && move.hasType('Fire')) ||
+      (attacker.hasAbility('Torrent') && move.hasType('Water')) ||
+      (attacker.hasAbility('Swarm') && move.hasType('Bug')))
   ) {
     bp = Math.floor(bp * 1.5);
     desc.attackerAbility = attacker.ability;
@@ -285,7 +285,7 @@ export function calculateADV(
   }
 
   if ((field.hasWeather('Sun') && move.hasType('Fire')) ||
-      (field.hasWeather('Rain') && move.hasType('Water'))) {
+    (field.hasWeather('Rain') && move.hasType('Water'))) {
     baseDamage = Math.floor(baseDamage * 1.5);
     desc.weather = field.weather;
   } else if (
@@ -327,6 +327,20 @@ export function calculateADV(
   result.damage = [];
   for (let i = 85; i <= 100; i++) {
     result.damage[i - 85] = Math.max(1, Math.floor((baseDamage * i) / 100));
+  }
+
+  if (move.hits > 1) {
+    for (let times = 0; times < move.hits; times++) {
+      let damageMultiplier = 85;
+      result.damage = result.damage.map(affectedAmount => {
+        if (times) {
+          const newFinalDamage = Math.max(1, Math.floor((baseDamage * damageMultiplier) / 100));
+          damageMultiplier++;
+          return affectedAmount + newFinalDamage;
+        }
+        return affectedAmount;
+      });
+    }
   }
 
   return result;

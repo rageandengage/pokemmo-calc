@@ -124,7 +124,7 @@ export function calculateRBYGSC(
   // by gen - in gen 2 we also need to check that the attacker does not have stat stage advantage
   const ignoreMods = move.isCrit &&
     (gen.num === 1 ||
-    (gen.num === 2 && attacker.boosts[attackStat]! <= defender.boosts[defenseStat]!));
+      (gen.num === 2 && attacker.boosts[attackStat]! <= defender.boosts[defenseStat]!));
 
   let lv = attacker.level;
   if (ignoreMods) {
@@ -158,7 +158,7 @@ export function calculateRBYGSC(
   }
 
   if ((attacker.named('Pikachu') && attacker.hasItem('Light Ball') && !isPhysical) ||
-      (attacker.named('Cubone', 'Marowak') && attacker.hasItem('Thick Club') && isPhysical)) {
+    (attacker.named('Cubone', 'Marowak') && attacker.hasItem('Thick Club') && isPhysical)) {
     at *= 2;
     desc.attackerItem = attacker.item;
   }
@@ -216,7 +216,7 @@ export function calculateRBYGSC(
   baseDamage = Math.min(997, baseDamage) + 2;
 
   if ((field.hasWeather('Sun') && move.hasType('Fire')) ||
-      (field.hasWeather('Rain') && move.hasType('Water'))) {
+    (field.hasWeather('Rain') && move.hasType('Water'))) {
     baseDamage = Math.floor(baseDamage * 1.5);
     desc.weather = field.weather;
   } else if (
@@ -254,6 +254,31 @@ export function calculateRBYGSC(
       } else {
         result.damage[i - 217] = Math.floor((baseDamage * i) / 255);
       }
+    }
+  }
+
+  if (move.hits > 1) {
+    for (let times = 0; times < move.hits; times++) {
+      let damageMultiplier = 217;
+      result.damage = result.damage.map(affectedAmount => {
+        if (times) {
+          let newFinalDamage = 0;
+          // in gen 2 damage is always rounded up to 1. TODO ADD TESTS
+          if (gen.num === 2) {
+            newFinalDamage = Math.max(1, Math.floor((baseDamage * damageMultiplier) / 255));
+          } else {
+            // in gen 1 the random factor multiplication is skipped if damage = 1
+            if (baseDamage === 1) {
+              newFinalDamage = 1;
+            } else {
+              newFinalDamage = Math.floor((baseDamage * damageMultiplier) / 255);
+            }
+          }
+          damageMultiplier++;
+          return affectedAmount + newFinalDamage;
+        }
+        return affectedAmount;
+      });
     }
   }
 

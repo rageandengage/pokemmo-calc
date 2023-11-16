@@ -31,6 +31,10 @@ function startsWith(string, target) {
 	return (string || '').slice(0, target.length) === target;
 }
 
+function endsWith(string, target) {
+	return (string || '').slice(-target.length) === target;
+}
+
 var LEGACY_STATS_RBY = ["hp", "at", "df", "sl", "sp"];
 var LEGACY_STATS_GSC = ["hp", "at", "df", "sa", "sd", "sp"];
 var LEGACY_STATS = [[], LEGACY_STATS_RBY, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC, LEGACY_STATS_GSC];
@@ -100,8 +104,17 @@ $("input:radio[name='format']").change(function () {
 	$(".format-specific").not("." + gameType.toLowerCase()).hide();
 });
 
+var defaultLevel = 100;
+$("input:radio[name='defaultLevel']").change(function () {
+	defaultLevel = $("input:radio[name='defaultLevel']:checked").val();
+	$("#levelL1").val(defaultLevel);
+	$("#levelR1").val(defaultLevel);
+	$("#levelL1").trigger("change");
+	$("#levelR1").trigger("change");
+});
+
 // auto-calc stats and current HP on change
-$(".level").keyup(function () {
+$(".level").bind("keyup change", function () {
 	var poke = $(this).closest(".poke-info");
 	calcHP(poke);
 	calcStats(poke);
@@ -222,7 +235,11 @@ $(".percent-hp").keyup(function () {
 });
 
 $(".ability").bind("keyup change", function () {
-	$(this).closest(".poke-info").find(".move-hits").val($(this).val() === 'Skill Link' ? 5 : 3);
+	var moveHits =
+	$(this).val() === 'Skill Link' ? 5 :
+		$(this).closest(".poke-info").find(".item").val() === 'Loaded Dice' ? 4 : 3;
+
+	$(this).closest(".poke-info").find(".move-hits").val(moveHits);
 
 	var ability = $(this).closest(".poke-info").find(".ability").val();
 
@@ -438,7 +455,9 @@ $(".move-selector").change(function () {
 		moveGroupObj.children(".stat-drops").hide();
 		moveGroupObj.children(".move-hits").show();
 		var pokemon = $(this).closest(".poke-info");
-		var moveHits = (pokemon.find(".ability").val() === 'Skill Link') ? 5 : 3;
+		var moveHits =
+			pokemon.find(".ability").val() === 'Skill Link' ? 5 :
+				pokemon.find(".item").val() === 'Loaded Dice' ? 4 : 3;
 		moveGroupObj.children(".move-hits").val(moveHits);
 	} else if (dropsStats) {
 		moveGroupObj.children(".move-hits").hide();
@@ -458,6 +477,10 @@ $(".item").change(function () {
 	} else {
 		$metronomeControl.hide();
 	}
+	var moveHits =
+		$(this).closest(".poke-info").find(".ability").val() === 'Skill Link' ? 5 :
+			itemName === 'Loaded Dice' ? 4 : 3;
+	$(this).closest(".poke-info").find(".move-hits").val(moveHits);
 });
 
 function smogonAnalysis(pokemonName) {
@@ -478,7 +501,7 @@ $(".set-selector").change(function () {
 			stickyMoves.clearStickyMove();
 		}
 		pokeObj.find(".teraToggle").prop("checked", false);
-		pokeObj.find(".boostedStat").val("Auto-Select");
+		pokeObj.find(".boostedStat").val("");
 		pokeObj.find(".analysis").attr("href", smogonAnalysis(pokemonName));
 		pokeObj.find(".type1").val(pokemon.types[0]);
 		pokeObj.find(".type2").val(pokemon.types[1]);
@@ -554,7 +577,7 @@ $(".set-selector").change(function () {
 				itemObj.val("");
 			}
 
-			setSelectValueIfValid(abilityObj, pokemon.ab, "");
+			setSelectValueIfValid(abilityObj, pokemon.abilities[0], "");
 			for (i = 0; i < 4; i++) {
 				moveObj = pokeObj.find(".move" + (i + 1) + " select.move-selector");
 				moveObj.attr('data-prev', moveObj.val());
@@ -662,7 +685,7 @@ $(".forme").change(function () {
 	var chosenSet = pokemonSets && pokemonSets[setName];
 	var greninjaSet = $(this).val().indexOf("Greninja") !== -1;
 	var isAltForme = $(this).val() !== pokemonName;
-	if (isAltForme && abilities.indexOf(altForme.ab) !== -1 && !greninjaSet) {
+	if (isAltForme && abilities.indexOf(altForme.abilities[0]) !== -1 && !greninjaSet) {
 		container.find(".ability").val(altForme.ab);
 	} else if (greninjaSet) {
 		$(this).parent().find(".ability");
@@ -1336,6 +1359,8 @@ $(document).ready(function () {
 	$("#percentage").change();
 	$("#singles-format").prop("checked", true);
 	$("#singles-format").change();
+	$("#default-level-100").prop("checked", true);
+	$("#default-level-100").change();
 	loadDefaultLists();
 	$(".move-selector").select2({
 		dropdownAutoWidth: true,
@@ -1355,6 +1380,6 @@ $("#mainResult").click(function () {
 		document.getElementById('tooltipText').style.visibility = 'visible';
 		setTimeout(function () {
 			document.getElementById('tooltipText').style.visibility = 'hidden';
-		}, 2000);
+		}, 1500);
 	});
 });

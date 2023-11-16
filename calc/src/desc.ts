@@ -63,8 +63,8 @@ export function display(
   err = true
 ) {
   const [minDamage, maxDamage] = damageRange(damage);
-  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]) * move.hits;
-  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]) * move.hits;
+  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]);
+  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]);
 
   const minDisplay = toDisplay(notation, min, defender.maxHP());
   const maxDisplay = toDisplay(notation, max, defender.maxHP());
@@ -86,8 +86,8 @@ export function displayMove(
   notation = '%'
 ) {
   const [minDamage, maxDamage] = damageRange(damage);
-  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]) * move.hits;
-  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]) * move.hits;
+  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]);
+  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]);
 
   const minDisplay = toDisplay(notation, min, defender.maxHP());
   const maxDisplay = toDisplay(notation, max, defender.maxHP());
@@ -96,7 +96,7 @@ export function displayMove(
   const recoilText = getRecoil(gen, attacker, defender, move, damage, notation).text;
 
   return `${minDisplay} - ${maxDisplay}${notation}${recoveryText &&
-    ` (${recoveryText})`}${recoilText && ` (${recoilText})`}`;
+  ` (${recoveryText})`}${recoilText && ` (${recoilText})`}`;
 }
 
 export function getRecovery(
@@ -273,15 +273,11 @@ export function getKOChance(
   const hazards = getHazards(gen, defender, field.defenderSide);
   const eot = getEndOfTurn(gen, attacker, defender, move, field);
   const toxicCounter =
-     defender.hasStatus('tox') && !defender.hasAbility('Magic Guard') ? defender.toxicCounter : 0;
+    defender.hasStatus('tox') && !defender.hasAbility('Magic Guard') ? defender.toxicCounter : 0;
 
   // multi-hit moves have too many possibilities for brute-forcing to work, so reduce it
   // to an approximate distribution
-  let qualifier = '';
-  if (move.hits > 1) {
-    qualifier = 'approx. ';
-    damage = squashMultihit(gen, damage, move.hits, err);
-  }
+  let qualifier = move.hits > 1 ? 'approx. ' : '';
 
   const hazardsText = hazards.texts.length > 0
     ? ' after ' + serializeText(hazards.texts)
@@ -372,7 +368,7 @@ export function getKOChance(
     if (predictTotal(
       damage[0],
       eot.damage,
-      move.hits,
+      1,
       move.timesUsed,
       toxicCounter,
       defender.maxHP()
@@ -388,7 +384,7 @@ export function getKOChance(
       predictTotal(
         damage[damage.length - 1],
         eot.damage,
-        move.hits,
+        1,
         move.timesUsed,
         toxicCounter,
         defender.maxHP()
@@ -459,8 +455,8 @@ function getHazards(gen: Generation, defender: Pokemon, defenderSide: Side) {
   }
 
   if (!defender.hasType('Flying') &&
-      !defender.hasAbility('Magic Guard', 'Levitate') &&
-      !defender.hasItem('Air Balloon')
+    !defender.hasAbility('Magic Guard', 'Levitate') &&
+    !defender.hasItem('Air Balloon')
   ) {
     if (defenderSide.spikes === 1) {
       damage += Math.floor(defender.maxHP() / 8);
@@ -624,31 +620,31 @@ function getEndOfTurn(
     texts.push('Salt Cure');
   }
   if (!defender.hasType('Fire') && !defender.hasAbility('Magic Guard') &&
-      (move.named('Fire Pledge (Grass Pledge Boosted)', 'Grass Pledge (Fire Pledge Boosted)'))) {
+    (move.named('Fire Pledge (Grass Pledge Boosted)', 'Grass Pledge (Fire Pledge Boosted)'))) {
     damage -= Math.floor(defender.maxHP() / 8);
     texts.push('Sea of Fire damage');
   }
 
   if (!defender.hasAbility('Magic Guard') && !defender.hasType('Grass') &&
-      (field.defenderSide.vinelash || move.named('G-Max Vine Lash'))) {
+    (field.defenderSide.vinelash || move.named('G-Max Vine Lash'))) {
     damage -= Math.floor(defender.maxHP() / 6);
     texts.push('Vine Lash damage');
   }
 
   if (!defender.hasAbility('Magic Guard') && !defender.hasType('Fire') &&
-      (field.defenderSide.wildfire || move.named('G-Max Wildfire'))) {
+    (field.defenderSide.wildfire || move.named('G-Max Wildfire'))) {
     damage -= Math.floor(defender.maxHP() / 6);
     texts.push('Wildfire damage');
   }
 
   if (!defender.hasAbility('Magic Guard') && !defender.hasType('Water') &&
-      (field.defenderSide.cannonade || move.named('G-Max Cannonade'))) {
+    (field.defenderSide.cannonade || move.named('G-Max Cannonade'))) {
     damage -= Math.floor(defender.maxHP() / 6);
     texts.push('Cannonade damage');
   }
 
   if (!defender.hasAbility('Magic Guard') && !defender.hasType('Rock') &&
-      (field.defenderSide.volcalith || move.named('G-Max Volcalith'))) {
+    (field.defenderSide.volcalith || move.named('G-Max Volcalith'))) {
     damage -= Math.floor(defender.maxHP() / 6);
     texts.push('Volcalith damage');
   }
@@ -873,16 +869,16 @@ function buildDescription(description: RawDesc, attacker: Pokemon, defender: Pok
     output += 'Helping Hand ';
   }
   if (description.isFlowerGiftAttacker) {
-    output += ' with an ally\'s Flower Gift ';
+    output += 'with an ally\'s Flower Gift ';
   }
   if (description.isBattery) {
-    output += ' Battery boosted ';
+    output += 'Battery boosted ';
   }
   if (description.isPowerSpot) {
-    output += ' Power Spot boosted ';
+    output += 'Power Spot boosted ';
   }
   if (description.isSwitching) {
-    output += ' switching boosted ';
+    output += 'switching boosted ';
   }
   output += description.moveName + ' ';
   if (description.moveBP && description.moveType) {

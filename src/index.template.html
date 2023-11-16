@@ -685,7 +685,16 @@
                     <input class="visually-hidden calc-trigger" type="radio" name="format" value="Doubles" id="doubles-format" />
                     <label class="btn btn-right" for="doubles-format">Doubles</label>
                 </div>
-                <hr class="gen-specific g6 g7 g8 g9" />
+					<div aria-labelledby="selectDefaultLevelInstruction" role="radiogroup" style="margin: auto auto 5px;" title="Select the default level.">
+						<span class="visually-hidden" id="selectDefaultLevelInstruction">Select the default level.</span>
+						<input class="visually-hidden calc-trigger" type="radio" name="defaultLevel" value="100" id="default-level-100" />
+						<label class="btn btn-wide btn-left" for="default-level-100">Level 100</label>
+						<input class="visually-hidden calc-trigger gen-specific g4 g5 g6 g7 g8 g9" type="radio" name="defaultLevel" value="50" id="default-level-50" />
+						<label class="btn btn-wide btn-mid gen-specific g4 g5 g6 g7 g8 g9" for="default-level-50">Level 50</label>
+						<input class="visually-hidden calc-trigger" type="radio" name="defaultLevel" value="5" id="default-level-5" />
+						<label class="btn btn-wide btn-right" for="default-level-5">Level 5</label>
+					</div>
+					<hr class="gen-specific g6 g7 g8 g9" />
                 <div aria-labelledby="selectWeatherInstruction" role="radiogroup">
                     <span class="visually-hidden" id="selectWeatherInstruction">Select the current weather condition.</span>
                     <div class="gen-specific g3 g4 g5 g6 g7 g8 g9" style="width: 22.2em; margin: 5px auto;" title="Select the current weather condition.">
@@ -1578,7 +1587,7 @@
 </div>
 
 <div style="clear:both;padding:20px;text-align:left">
-	<li><a href="https://github.com/rageandengage/pokemmo-calc/" class="links-lighten" target="_blank">Github</a></li>
+	<li><a href="https://github.com/rageandengage/pokemmo-calc/" class="links-lighten" target="_blank">Github / v0.8.1-pokemmo / Upstream: 60e20b5</a></li>
 	<br>
 	<button type="button" id="dark-theme-toggle"></button>
 	<script type="text/javascript" src="./js/dark-theme-toggle.js?"></script>

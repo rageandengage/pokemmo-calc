@@ -100,25 +100,18 @@ export function getFinalSpeed(gen: Generation, pokemon: Pokemon, field: Field, s
   // speedMods.push(1024);
 
   if ((pokemon.hasAbility('Unburden') && pokemon.abilityOn) ||
-      (pokemon.hasAbility('Chlorophyll') && weather.includes('Sun')) ||
-      (pokemon.hasAbility('Sand Rush') && weather === 'Sand') ||
-      (pokemon.hasAbility('Swift Swim') && weather.includes('Rain')) ||
-      (pokemon.hasAbility('Slush Rush') && ['Hail', 'Snow'].includes(weather)) ||
-      (pokemon.hasAbility('Snow Plow') && ['Hail', 'Snow'].includes(weather)) ||
-      (pokemon.hasAbility('Surge Surfer') && terrain === 'Electric')
+    (pokemon.hasAbility('Chlorophyll') && weather.includes('Sun')) ||
+    (pokemon.hasAbility('Sand Rush') && weather === 'Sand') ||
+    (pokemon.hasAbility('Swift Swim') && weather.includes('Rain')) ||
+    (pokemon.hasAbility('Snow Plow') && ['Hail', 'Snow'].includes(weather)) ||
+    (pokemon.hasAbility('Surge Surfer') && terrain === 'Electric')
   ) {
     speedMods.push(8192);
   } else if (pokemon.hasAbility('Quick Feet') && pokemon.status) {
     speedMods.push(6144);
   } else if (pokemon.hasAbility('Slow Start') && pokemon.abilityOn) {
     speedMods.push(2048);
-  } else if (
-    getQPBoostedStat(pokemon, gen) === 'spe' &&
-    ((pokemon.hasAbility('Protosynthesis') &&
-      (weather.includes('Sun') || pokemon.hasItem('Booster Energy'))) ||
-      (pokemon.hasAbility('Quark Drive') &&
-        (terrain === 'Electric' || pokemon.hasItem('Booster Energy'))))
-  ) {
+  } else if (isQPActive(pokemon, field) && getQPBoostedStat(pokemon, gen) === 'spe') {
     speedMods.push(6144);
   }
 
@@ -191,9 +184,11 @@ export function checkForecast(pokemon: Pokemon, weather?: Weather) {
 }
 
 export function checkItem(pokemon: Pokemon, magicRoomActive?: boolean) {
+  // Pokemon with Klutz still get their speed dropped in generation 4
+  if (pokemon.gen.num === 4 && pokemon.hasItem('Iron Ball')) return;
   if (
     pokemon.hasAbility('Klutz') && !EV_ITEMS.includes(pokemon.item!) ||
-      magicRoomActive
+    magicRoomActive
   ) {
     pokemon.item = '' as ItemName;
   }
@@ -240,14 +235,32 @@ export function checkDownload(source: Pokemon, target: Pokemon, wonderRoomActive
 }
 
 export function checkIntrepidSword(source: Pokemon, gen: Generation) {
-  if (source.hasAbility('Intrepid Sword') && gen.num < 9) {
+  if (source.hasAbility('Intrepid Sword') && gen.num > 7) {
     source.boosts.atk = Math.min(6, source.boosts.atk + 1);
   }
 }
 
 export function checkDauntlessShield(source: Pokemon, gen: Generation) {
-  if (source.hasAbility('Dauntless Shield') && gen.num < 9) {
+  if (source.hasAbility('Dauntless Shield') && gen.num > 7) {
     source.boosts.def = Math.min(6, source.boosts.def + 1);
+  }
+}
+
+export function checkEmbody(source: Pokemon, gen: Generation) {
+  if (gen.num < 9) return;
+  switch (source.ability) {
+  case 'Embody Aspect (Cornerstone)':
+    source.boosts.def = Math.min(6, source.boosts.def + 1);
+    break;
+  case 'Embody Aspect (Hearthflame)':
+    source.boosts.atk = Math.min(6, source.boosts.atk + 1);
+    break;
+  case 'Embody Aspect (Teal)':
+    source.boosts.spe = Math.min(6, source.boosts.spe + 1);
+    break;
+  case 'Embody Aspect (Wellspring)':
+    source.boosts.spd = Math.min(6, source.boosts.spd + 1);
+    break;
   }
 }
 
@@ -396,7 +409,9 @@ export function getQPBoostedStat(
   pokemon: Pokemon,
   gen?: Generation
 ): StatID {
-  if (pokemon.boostedStat) return pokemon.boostedStat; // override.
+  if (pokemon.boostedStat && pokemon.boostedStat !== 'auto') {
+    return pokemon.boostedStat; // override.
+  }
   let bestStat: StatID = 'atk';
   for (const stat of ['def', 'spa', 'spd', 'spe'] as StatID[]) {
     if (
@@ -408,6 +423,26 @@ export function getQPBoostedStat(
     }
   }
   return bestStat;
+}
+
+export function isQPActive(
+  pokemon: Pokemon,
+  field: Field
+) {
+  if (!pokemon.boostedStat) {
+    return false;
+  }
+
+  const weather = field.weather || '';
+  const terrain = field.terrain;
+
+  return (
+    (pokemon.hasAbility('Protosynthesis') &&
+      (weather.includes('Sun') || pokemon.hasItem('Booster Energy'))) ||
+    (pokemon.hasAbility('Quark Drive') &&
+      (terrain === 'Electric' || pokemon.hasItem('Booster Energy'))) ||
+    (pokemon.boostedStat !== 'auto')
+  );
 }
 
 export function getFinalDamage(
@@ -483,7 +518,7 @@ export function getEVDescriptionText(
     : nature.plus === stat ? '+'
     : nature.minus === stat ? '-'
     : '') + ' ' +
-     Stats.displayStat(stat));
+    Stats.displayStat(stat));
 }
 
 export function handleFixedDamageMoves(attacker: Pokemon, move: Move) {

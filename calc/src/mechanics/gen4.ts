@@ -144,8 +144,9 @@ export function calculateDPP(
 
   let typeEffectiveness = type1Effectiveness * type2Effectiveness;
 
-  // Iron Ball ignores Klutz in generation 4
-  if (typeEffectiveness === 0 && move.hasType('Ground') && defender.hasItem('Iron Ball')) {
+  // Klutz doesn't let Iron Ball ground in generation 4
+  if (typeEffectiveness === 0 && move.hasType('Ground') &&
+    (defender.hasItem('Iron Ball') && !defender.hasAbility('Klutz'))) {
     if (type1Effectiveness === 0) {
       type1Effectiveness = 1;
     } else if (defender.types[1] && type2Effectiveness === 0) {
@@ -160,12 +161,12 @@ export function calculateDPP(
 
   const ignoresWonderGuard = move.hasType('???') || move.named('Fire Fang');
   if ((!ignoresWonderGuard && defender.hasAbility('Wonder Guard') && typeEffectiveness <= 1) ||
-      (move.hasType('Fire') && defender.hasAbility('Flash Fire')) ||
-      (move.hasType('Water') && defender.hasAbility('Dry Skin', 'Water Absorb')) ||
-      (move.hasType('Electric') && defender.hasAbility('Motor Drive', 'Volt Absorb')) ||
-      (move.hasType('Ground') && !field.isGravity &&
-        !defender.hasItem('Iron Ball') && defender.hasAbility('Levitate')) ||
-      (move.flags.sound && defender.hasAbility('Soundproof'))
+    (move.hasType('Fire') && defender.hasAbility('Flash Fire')) ||
+    (move.hasType('Water') && defender.hasAbility('Dry Skin', 'Water Absorb')) ||
+    (move.hasType('Electric') && defender.hasAbility('Motor Drive', 'Volt Absorb')) ||
+    (move.hasType('Ground') && !field.isGravity &&
+      !defender.hasItem('Iron Ball') && defender.hasAbility('Levitate')) ||
+    (move.flags.sound && defender.hasAbility('Soundproof'))
   ) {
     desc.defenderAbility = defender.ability;
     return result;
@@ -268,41 +269,41 @@ export function calculateDPP(
 
   const isPhysical = move.category === 'Physical';
   if ((attacker.hasItem('Muscle Band') && isPhysical) ||
-      (attacker.hasItem('Wise Glasses') && !isPhysical)) {
+    (attacker.hasItem('Wise Glasses') && !isPhysical)) {
     basePower = Math.floor(basePower * 1.1);
     desc.attackerItem = attacker.item;
   } else if (move.hasType(getItemBoostType(attacker.item)) ||
     (attacker.hasItem('Adamant Orb') &&
-     attacker.named('Dialga') &&
-     move.hasType('Steel', 'Dragon')) ||
+      attacker.named('Dialga') &&
+      move.hasType('Steel', 'Dragon')) ||
     (attacker.hasItem('Lustrous Orb') &&
-     attacker.named('Palkia') &&
-     move.hasType('Water', 'Dragon')) ||
+      attacker.named('Palkia') &&
+      move.hasType('Water', 'Dragon')) ||
     (attacker.hasItem('Griseous Orb') &&
-     attacker.named('Giratina-Origin') &&
-     move.hasType('Ghost', 'Dragon'))
+      attacker.named('Giratina-Origin') &&
+      move.hasType('Ghost', 'Dragon'))
   ) {
     basePower = Math.floor(basePower * 1.2);
     desc.attackerItem = attacker.item;
   }
 
   if ((attacker.hasAbility('Reckless') && (move.recoil || move.hasCrashDamage)) ||
-      (attacker.hasAbility('Iron Fist') && move.flags.punch)) {
+    (attacker.hasAbility('Iron Fist') && move.flags.punch)) {
     basePower = Math.floor(basePower * 1.2);
     desc.attackerAbility = attacker.ability;
   } else if ((attacker.curHP() <= attacker.maxHP() / 3 &&
-    ((attacker.hasAbility('Overgrow') && move.hasType('Grass')) ||
-      (attacker.hasAbility('Blaze') && move.hasType('Fire')) ||
-      (attacker.hasAbility('Torrent') && move.hasType('Water')) ||
-      (attacker.hasAbility('Swarm') && move.hasType('Bug')))) ||
-      (attacker.hasAbility('Technician') && basePower <= 60)
+      ((attacker.hasAbility('Overgrow') && move.hasType('Grass')) ||
+        (attacker.hasAbility('Blaze') && move.hasType('Fire')) ||
+        (attacker.hasAbility('Torrent') && move.hasType('Water')) ||
+        (attacker.hasAbility('Swarm') && move.hasType('Bug')))) ||
+    (attacker.hasAbility('Technician') && basePower <= 60)
   ) {
     basePower = Math.floor(basePower * 1.5);
     desc.attackerAbility = attacker.ability;
   }
 
   if ((defender.hasAbility('Heatproof') && move.hasType('Fire')) ||
-      (defender.hasAbility('Thick Fat') && (move.hasType('Fire', 'Ice')))) {
+    (defender.hasAbility('Thick Fat') && (move.hasType('Fire', 'Ice')))) {
     basePower = Math.floor(basePower * 0.5);
     desc.defenderAbility = defender.ability;
   } else if (defender.hasAbility('Dry Skin') && move.hasType('Fire')) {
@@ -348,7 +349,7 @@ export function calculateDPP(
   } else if (
     (isPhysical &&
       (attacker.hasAbility('Hustle') || (attacker.hasAbility('Guts') && attacker.status)) ||
-    (!isPhysical && attacker.abilityOn && attacker.hasAbility('Plus', 'Minus')))
+      (!isPhysical && attacker.abilityOn && attacker.hasAbility('Plus', 'Minus')))
   ) {
     attack = Math.floor(attack * 1.5);
     desc.attackerAbility = attacker.ability;
@@ -358,7 +359,7 @@ export function calculateDPP(
   }
 
   if ((isPhysical ? attacker.hasItem('Choice Band') : attacker.hasItem('Choice Specs')) ||
-      (!isPhysical && attacker.hasItem('Soul Dew') && attacker.named('Latios', 'Latias'))) {
+    (!isPhysical && attacker.hasItem('Soul Dew') && attacker.named('Latios', 'Latias'))) {
     attack = Math.floor(attack * 1.5);
     desc.attackerItem = attacker.item;
   } else if (
@@ -453,12 +454,12 @@ export function calculateDPP(
   }
 
   if (field.gameType !== 'Singles' &&
-      ['allAdjacent', 'allAdjacentFoes'].includes(move.target)) {
+    ['allAdjacent', 'allAdjacentFoes'].includes(move.target)) {
     baseDamage = Math.floor((baseDamage * 3) / 4);
   }
 
   if ((field.hasWeather('Sun') && move.hasType('Fire')) ||
-      (field.hasWeather('Rain') && move.hasType('Water'))) {
+    (field.hasWeather('Rain') && move.hasType('Water'))) {
     baseDamage = Math.floor(baseDamage * 1.5);
     desc.weather = field.weather;
   } else if (
@@ -549,6 +550,28 @@ export function calculateDPP(
     damage[i] = Math.max(1, damage[i]);
   }
   result.damage = damage;
+
+  if (move.hits > 1) {
+    for (let times = 0; times < move.hits; times++) {
+      let damageMultiplier = 0;
+      result.damage = result.damage.map(affectedAmount => {
+        if (times) {
+          let newFinalDamage = 0;
+          newFinalDamage = Math.floor((baseDamage * (85 + damageMultiplier)) / 100);
+          newFinalDamage = Math.floor(newFinalDamage * stabMod);
+          newFinalDamage = Math.floor(newFinalDamage * type1Effectiveness);
+          newFinalDamage = Math.floor(newFinalDamage * type2Effectiveness);
+          newFinalDamage = Math.floor(newFinalDamage * filterMod);
+          newFinalDamage = Math.floor(newFinalDamage * ebeltMod);
+          newFinalDamage = Math.floor(newFinalDamage * tintedMod);
+          newFinalDamage = Math.max(1, newFinalDamage);
+          damageMultiplier++;
+          return affectedAmount + newFinalDamage;
+        }
+        return affectedAmount;
+      });
+    }
+  }
 
   // #endregion
 
