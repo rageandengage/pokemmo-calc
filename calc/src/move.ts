@@ -58,7 +58,11 @@ export class Move implements State.Move {
     this.hits = 1;
     if (data.multihit) {
       if (typeof data.multihit === 'number') {
-        this.hits = data.multihit;
+        if (data.multiaccuracy) {
+          this.hits = options.hits || data.multihit;
+        } else {
+          this.hits = data.multihit;
+        }
       } else if (options.hits) {
         this.hits = options.hits;
       } else {
@@ -90,7 +94,7 @@ export class Move implements State.Move {
     if (data.self?.boosts && data.self.boosts[stat] && data.self.boosts[stat]! < 0) {
       this.dropsStats = Math.abs(data.self.boosts[stat]!);
     }
-    this.timesUsed = (this.dropsStats && options.timesUsed) || 1;
+    this.timesUsed = options.timesUsed || 1;
     this.secondaries = data.secondaries;
     // For the purposes of the damage formula only 'allAdjacent' and 'allAdjacentFoes' matter, so we
     // simply default to 'any' for the others even though they may not actually be 'any'-target

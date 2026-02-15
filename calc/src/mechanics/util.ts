@@ -115,12 +115,14 @@ export function getFinalSpeed(gen: Generation, pokemon: Pokemon, field: Field, s
     speedMods.push(6144);
   }
 
-  if (pokemon.hasItem('Choice Scarf')) {
-    speedMods.push(6144);
-  } else if (pokemon.hasItem('Iron Ball', ...EV_ITEMS)) {
-    speedMods.push(2048);
-  } else if (pokemon.hasItem('Quick Powder') && pokemon.named('Ditto')) {
-    speedMods.push(8192);
+  if (!(pokemon.hasAbility('Unburden') && pokemon.abilityOn)) {
+    if (pokemon.hasItem('Choice Scarf')) {
+      speedMods.push(6144);
+    } else if (pokemon.hasItem('Iron Ball', ...EV_ITEMS)) {
+      speedMods.push(2048);
+    } else if (pokemon.hasItem('Quick Powder') && pokemon.named('Ditto')) {
+      speedMods.push(8192);
+    }
   }
 
   speed = OF32(pokeRound((speed * chainMods(speedMods, 410, 131172)) / 4096));
@@ -190,6 +192,7 @@ export function checkItem(pokemon: Pokemon, magicRoomActive?: boolean) {
     pokemon.hasAbility('Klutz') && !EV_ITEMS.includes(pokemon.item!) ||
     magicRoomActive
   ) {
+    pokemon.disabledItem = pokemon.item;
     pokemon.item = '' as ItemName;
   }
 }
@@ -205,7 +208,7 @@ export function checkIntimidate(gen: Generation, source: Pokemon, target: Pokemo
     target.hasAbility('Clear Body', 'White Smoke', 'Hyper Cutter', 'Full Metal Body') ||
     // More abilities now block Intimidate in Gen 8+ (DaWoblefet, Cloudy Mistral)
     (gen.num >= 8 && target.hasAbility('Inner Focus', 'Own Tempo', 'Oblivious', 'Scrappy')) ||
-    target.hasItem('Clear Amulet');
+    target.hasItem('Pure Amulet');
   if (source.hasAbility('Intimidate') && source.abilityOn && !blocked) {
     if (target.hasAbility('Contrary', 'Defiant', 'Guard Dog')) {
       target.boosts.atk = Math.min(6, target.boosts.atk + 1);
@@ -264,6 +267,12 @@ export function checkEmbody(source: Pokemon, gen: Generation) {
   }
 }
 
+export function checkWindRider(source: Pokemon, attackingSide: Side) {
+  if (source.hasAbility('Wind Rider') && attackingSide.isTailwind) {
+    source.boosts.atk = Math.min(6, source.boosts.atk + 1);
+  }
+}
+
 export function checkInfiltrator(pokemon: Pokemon, affectedSide: Side) {
   if (pokemon.hasAbility('Infiltrator')) {
     affectedSide.isReflect = false;
@@ -298,15 +307,16 @@ export function checkMultihitBoost(
   move: Move,
   field: Field,
   desc: RawDesc,
-  usedWhiteHerb = false
-) {
+  attackerUsedItem = false,
+  defenderUsedItem = false
+): [boolean, boolean] {
   // NOTE: attacker.ability must be Parental Bond for these moves to be multi-hit
   if (move.named('Gyro Ball', 'Electro Ball') && defender.hasAbility('Gooey', 'Tangling Hair')) {
     // Gyro Ball (etc) makes contact into Gooey (etc) whenever its inflicting multiple hits because
     // this can only happen if the attacker ability is Parental Bond (and thus can't be Long Reach)
-    if (attacker.hasItem('White Herb') && !usedWhiteHerb) {
+    if (attacker.hasItem('White Herb') && !attackerUsedItem) {
       desc.attackerItem = attacker.item;
-      usedWhiteHerb = true;
+      attackerUsedItem = true;
     } else {
       attacker.boosts.spe = Math.max(attacker.boosts.spe - 1, -6);
       attacker.stats.spe = getFinalSpeed(gen, attacker, field, field.attackerSide);
@@ -331,9 +341,9 @@ export function checkMultihitBoost(
     if (attacker.hasAbility('Unaware')) {
       desc.attackerAbility = attacker.ability;
     } else {
-      if (defender.hasItem('White Herb') && !usedWhiteHerb) {
+      if (defender.hasItem('White Herb') && !defenderUsedItem) {
         desc.defenderItem = defender.item;
-        usedWhiteHerb = true;
+        defenderUsedItem = true;
       } else {
         defender.boosts.def = Math.max(defender.boosts.def - 1, -6);
         defender.stats.def = getModifiedStat(defender.rawStats.def, defender.boosts.def, gen);
@@ -361,18 +371,18 @@ export function checkMultihitBoost(
         if (simple > 1) desc.attackerAbility = attacker.ability;
       }
 
-      if (attacker.hasItem('White Herb') && attacker.boosts[stat] < 0 && !usedWhiteHerb) {
+      if (attacker.hasItem('White Herb') && attacker.boosts[stat] < 0 && !attackerUsedItem) {
         boosts += move.dropsStats * simple;
         desc.attackerItem = attacker.item;
-        usedWhiteHerb = true;
+        attackerUsedItem = true;
       }
 
       attacker.boosts[stat] = boosts;
-      attacker.stats[stat] = getModifiedStat(attacker.rawStats[stat], defender.boosts[stat], gen);
+      attacker.stats[stat] = getModifiedStat(attacker.rawStats[stat], boosts, gen);
     }
   }
 
-  return usedWhiteHerb;
+  return [attackerUsedItem, defenderUsedItem];
 }
 
 export function chainMods(mods: number[], lowerBound: number, upperBound: number) {
@@ -486,9 +496,43 @@ export function getShellSideArmCategory(source: Pokemon, target: Pokemon): MoveC
   return physicalDamage > specialDamage ? 'Physical' : 'Special';
 }
 
-export function getWeightFactor(pokemon: Pokemon) {
-  return pokemon.hasAbility('Heavy Metal') ? 2
-    : (pokemon.hasAbility('Light Metal') || pokemon.hasItem('Float Stone')) ? 0.5 : 1;
+export function getWeight(pokemon: Pokemon, desc: RawDesc, role: 'defender' | 'attacker') {
+  let weightHG = pokemon.weightkg * 10;
+  const abilityFactor = pokemon.hasAbility('Heavy Metal') ? 2
+    : pokemon.hasAbility('Light Metal') ? 0.5
+    : 1;
+  if (abilityFactor !== 1) {
+    weightHG = Math.max(Math.trunc(weightHG * abilityFactor), 1);
+    desc[`${role}Ability`] = pokemon.ability;
+  }
+
+  if (pokemon.hasItem('Float Stone')) {
+    weightHG = Math.max(Math.trunc(weightHG * 0.5), 1);
+    desc[`${role}Item`] = pokemon.item;
+  }
+
+  // convert back to kg
+  return weightHG / 10;
+}
+
+export function getStabMod(attacker: Pokemon, move: Move, desc: RawDesc) {
+  let stabMod = 4096;
+  if (attacker.hasOriginalType(move.type)) {
+    stabMod += 2048;
+  } else if (attacker.hasAbility('Protean', 'Libero') && !attacker.teraType) {
+    stabMod += 2048;
+    desc.attackerAbility = attacker.ability;
+  }
+  const teraType = attacker.teraType;
+  if (teraType === move.type) {
+    stabMod += 2048;
+    desc.attackerTera = teraType;
+  }
+  if (attacker.hasAbility('Adaptability') && attacker.hasType(move.type)) {
+    stabMod += teraType && attacker.hasOriginalType(teraType) ? 1024 : 2048;
+    desc.attackerAbility = attacker.ability;
+  }
+  return stabMod;
 }
 
 export function countBoosts(gen: Generation, boosts: StatsTable) {
@@ -506,19 +550,40 @@ export function countBoosts(gen: Generation, boosts: StatsTable) {
   return sum;
 }
 
+export function getStatDescriptionText(
+  gen: Generation,
+  pokemon: Pokemon,
+  stat: StatID,
+  natureName?: NatureName
+): string {
+  let desc = pokemon.evs[stat] + '';
+  if (natureName) {
+    const nature = gen.natures.get(toID(natureName))!;
+    desc += (nature.plus === nature.minus ? ''
+      : nature.plus === stat ? '+'
+      : nature.minus === stat ? '-'
+      : '');
+  }
+  desc += ' ' + Stats.displayStat(stat);
+  const iv = pokemon.ivs[stat];
+  if (iv !== 31) desc += ` ${iv} IVs`;
+  return desc;
+}
+
+/** @deprecated Use getStatDescriptionText instead */
 export function getEVDescriptionText(
   gen: Generation,
   pokemon: Pokemon,
   stat: 'atk' | 'def' | 'spd' | 'spa',
   natureName: NatureName
 ): string {
-  const nature = gen.natures.get(toID(natureName))!;
-  return (pokemon.evs[stat] +
-    (nature.plus === nature.minus ? ''
-    : nature.plus === stat ? '+'
-    : nature.minus === stat ? '-'
-    : '') + ' ' +
-    Stats.displayStat(stat));
+  return getStatDescriptionText(gen, pokemon, stat, natureName);
+}
+
+/** @deprecated Use getWeight instead */
+export function getWeightFactor(pokemon: Pokemon) {
+  return pokemon.hasAbility('Heavy Metal') ? 2
+    : (pokemon.hasAbility('Light Metal') || pokemon.hasItem('Float Stone')) ? 0.5 : 1;
 }
 
 export function handleFixedDamageMoves(attacker: Pokemon, move: Move) {

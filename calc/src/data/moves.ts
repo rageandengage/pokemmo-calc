@@ -26,6 +26,7 @@ export interface MoveData {
   readonly isZ?: boolean;
   readonly isMax?: boolean;
   readonly multihit?: number | number[];
+  readonly multiaccuracy?: boolean;
 
   readonly bp: number;
   readonly zp?: number;
@@ -377,7 +378,7 @@ const ADV_PATCH: {[name: string]: DeepPartial<MoveData>} = {
   Surf: {target: 'allAdjacentFoes'},
   Thief: {makesContact: true},
   Thrash: {makesContact: true},
-  'Triple Kick': {makesContact: true, multihit: 3},
+  'Triple Kick': {makesContact: true, multihit: 3, multiaccuracy: true},
   'Vine Whip': {makesContact: true},
   Waterfall: {makesContact: true},
   Wrap: {makesContact: true},
@@ -1792,6 +1793,7 @@ const SM: {[name: string]: MoveData} = extend(true, {}, XY, SM_PATCH);
 const SS_PATCH: {[name: string]: DeepPartial<MoveData>} = {
   Howl: {isSound: true},
   'Rapid Spin': {bp: 50, secondaries: true},
+  'Triple Axel': {multiaccuracy: true},
 };
 
 const SS: {[name: string]: MoveData} = extend(true, {}, SM, SS_PATCH);
@@ -1899,6 +1901,7 @@ class Move implements I.Move {
   readonly zp?: number;
   readonly maxPower?: number;
   readonly multihit?: number | number[];
+  readonly multiaccuracy?: boolean;
 
   private static readonly FLAGS = new Set([
     'bp',

@@ -346,22 +346,35 @@ export const MEGA_STONES: {[species: string]: string} = {
 
 const XY = BW.concat(
   [
-    'Assault Gear', // backported
+    'Assault Gear', // backported (Assault Vest)
+    'Luminous Moss',
+    'Safety Goggles',
+    'Snowball',
+    'Type Policy', // PokeMMO name for Weakness Policy
   ].sort()
 );
 
 const SM = XY.concat(
   [
+    'Protective Pads',
   ].sort()
 );
 
 const SS = SM.concat(
   [
+    'Eject Pack',
+    'Reinforced Boots', // PokeMMO name for Heavy-Duty Boots
+    'Room Service',
+    'Throat Spray',
   ].sort()
 );
 
 const SV = SS.concat(
   [
+    'Covert Mantle', // PokeMMO name for Covert Cloak
+    'Loaded Dice',
+    'Punching Gloves', // PokeMMO name for Punching Glove
+    'Pure Amulet', // PokeMMO name for Clear Amulet
   ].sort()
 );
 

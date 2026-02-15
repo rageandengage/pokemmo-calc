@@ -239,9 +239,9 @@ describe('calc', () => {
     inGens(5, 9, ({gen, calculate, Pokemon, Move, Field}) => {
       const dragonite = Pokemon('Dragonite', {ability: 'Multiscale'});
       const dragonite1 = Pokemon('Dragonite', {ability: 'Multiscale', curHP: 69});
-      const dragonite2 = Pokemon('Dragonite', {ability: 'Shadow Shield', item: 'Heavy-Duty Boots'});
+      const dragonite2 = Pokemon('Dragonite', {ability: 'Shadow Shield', item: 'Reinforced Boots'});
       if (gen > 7) {
-        test(`Multiscale and Shadow Shield halves damage even if there are hazzards if holding Heavy-Duty Boots (gen ${gen})`, () => {
+        test(`Multiscale and Shadow Shield halves damage even if there are hazzards if holding Reinforced Boots (gen ${gen})`, () => {
           const field = Field({defenderSide: {isSR: true}});
           const result = calculate(Pokemon('Abomasnow'), dragonite2, Move('Blizzard'), field);
           expect(result.range()).toEqual([222, 264]);
