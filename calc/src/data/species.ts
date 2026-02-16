@@ -2997,7 +2997,7 @@ const DPP_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Cresselia: {
     types: ['Psychic'],
-    bs: {hp: 120, at: 70, df: 120, sa: 75, sd: 130, sp: 85},
+    bs: {hp: 120, at: 70, df: 110, sa: 75, sd: 120, sp: 85},
     weightkg: 85.6,
     abilities: {0: 'Levitate'},
   },
@@ -3552,6 +3552,13 @@ const DPP_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 85, at: 50, df: 95, sa: 120, sd: 115, sp: 80},
     weightkg: 38,
     abilities: {0: 'Hustle'},
+  },
+  Grotle: {
+    types: ['Grass'],
+    bs: {hp: 75, at: 89, df: 85, sa: 55, sd: 65, sp: 36},
+    weightkg: 97,
+    nfe: true,
+    abilities: {0: 'Overgrow'},
   },
   Torterra: {
     types: ['Grass', 'Ground'],
