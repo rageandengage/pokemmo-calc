@@ -1,11 +1,11 @@
 {
-  "name": "@smogon/calc",
-  "version": "0.8.1",
+  "name": "@rageandengage/pokemmo-calc",
+  "version": "0.9.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "unpkg": "dist/production.min.js",
-  "description": "Pokémon battle calculator",
-  "repository": "github:smogon/damage-calc",
+  "description": "PokeMMO damage calculator",
+  "repository": "github:rageandengage/pokemmo-calc",
   "contributors": [
     "Austin Couturier <austincouturier@icloud.com>"
   ],

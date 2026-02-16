@@ -1,6 +1,6 @@
 {
   "private": true,
-  "repository": "github:smogon/damage-calc",
+  "repository": "github:rageandengage/pokemmo-calc",
   "license": "MIT",
   "dependencies": {
     "@pkmn/data": "^0.7.54",
