@@ -56,7 +56,12 @@
 <br>
 <div class="wrapper">
 
-    <span class="title-text main-title-text">PokeMMO Damage Calculator</span>
+    <span class="title-text main-title-text" data-i18n="PokeMMO Damage Calculator">PokeMMO Damage Calculator</span>
+    <select id="lang-selector" class="lang-selector" title="Language">
+        <option value="en">EN</option>
+        <option value="zh">简中</option>
+        <option value="zh-Hant">繁中</option>
+    </select>
     <div aria-label="Settings" role="region">
         <span class="genSelection" aria-labelledby="selectGenInstruction" role="radiogroup" title="Select the generation.">
             <span class="visually-hidden" id="selectGenInstruction">Select the generation.</span>
@@ -73,9 +78,9 @@
         </span>
         <span class="modeSelection" aria-labelledby="selectModeInstruction" role="radiogroup" title="Select the calculator's mode of function.">
             <span class="visually-hidden" id="selectModeInstruction">Select the calculator's mode of function.</span>
-            <input class="mode visually-hidden" type="radio" name="mode" id="one-vs-one" checked="checked" /><label class="btn btn-left btn-wide" for="one-vs-one">One vs One</label>
-            <input class="mode visually-hidden" type="radio" name="mode" id="one-vs-all" /><label class="btn btn-mid btn-wide gen-specific g3 g4 g5 g6 g7 g8 g9" for="one-vs-all">One vs All</label>
-            <input class="mode visually-hidden" type="radio" name="mode" id="all-vs-one" /><label class="btn btn-right btn-wide gen-specific g3 g4 g5 g6 g7 g8 g9" for="all-vs-one">All vs One</label>
+            <input class="mode visually-hidden" type="radio" name="mode" id="one-vs-one" checked="checked" /><label class="btn btn-left btn-wide" for="one-vs-one" data-i18n="One vs One">One vs One</label>
+            <input class="mode visually-hidden" type="radio" name="mode" id="one-vs-all" /><label class="btn btn-mid btn-wide gen-specific g3 g4 g5 g6 g7 g8 g9" for="one-vs-all" data-i18n="One vs All">One vs All</label>
+            <input class="mode visually-hidden" type="radio" name="mode" id="all-vs-one" /><label class="btn btn-right btn-wide gen-specific g3 g4 g5 g6 g7 g8 g9" for="all-vs-one" data-i18n="All vs One">All vs One</label>
             <!-- <input class="mode visually-hidden" type="radio" name="mode" id="randoms" /><label class="btn btn-right btn-xwide" for="randoms">Random Battles</label> -->
         </span>
     </div>
@@ -107,7 +112,7 @@
                     <input type="text" class="set-selector" />
                     <div class="info-group top">
                         <div>
-                            <label>Type</label>
+                            <label data-i18n="Type">Type</label>
                             <select class="type1 terrain-trigger"></select>
                             <select class="type2 terrain-trigger"></select>
                         </div>
@@ -125,11 +130,11 @@
                             <select class="gender calc-trigger"><option></option><option selected="selected">Male</option><option>Female</option></select>
                         </div>
                         <div>
-                            <label>Level</label>
+                            <label data-i18n="Level">Level</label>
                             <input class="level" value="100" />
                         </div>
                         <div class="hide">
-                            <label>Weight (kg)</label>
+                            <label data-i18n="Weight (kg)">Weight (kg)</label>
                             <input class="weight" value="10.0" />
                         </div>
                     </div>
@@ -137,16 +142,16 @@
                         <table>
                             <tr>
                                 <th></th>
-                                <th>Base</th>
-                                <th class="gen-specific g3 g4 g5 g6 g7 g8 g9">IVs</th>
-                                <th class="gen-specific g3 g4 g5 g6 g7 g8 g9">EVs</th>
+                                <th data-i18n="Base">Base</th>
+                                <th class="gen-specific g3 g4 g5 g6 g7 g8 g9" data-i18n="IVs">IVs</th>
+                                <th class="gen-specific g3 g4 g5 g6 g7 g8 g9" data-i18n="EVs">EVs</th>
                                 <th class="gen-specific g1 g2 hide">DVs</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr class="hp">
                                 <td>
-                                    <label>HP</label>
+                                    <label data-i18n="HP">HP</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -166,7 +171,7 @@
                             </tr>
                             <tr class="at">
                                 <td>
-                                    <label>Attack</label>
+                                    <label data-i18n="Attack">Attack</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -202,7 +207,7 @@
                             </tr>
                             <tr class="df">
                                 <td>
-                                    <label>Defense</label>
+                                    <label data-i18n="Defense">Defense</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -238,7 +243,7 @@
                             </tr>
                             <tr class="sa gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
                                 <td>
-                                    <label>Sp. Atk</label>
+                                    <label data-i18n="Sp. Atk">Sp. Atk</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -274,7 +279,7 @@
                             </tr>
                             <tr class="sd gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
                                 <td>
-                                    <label>Sp. Def</label>
+                                    <label data-i18n="Sp. Def">Sp. Def</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -310,7 +315,7 @@
                             </tr>
                             <tr class="sl gen-specific g1 hide">
                                 <td>
-                                    <label>Special</label>
+                                    <label data-i18n="Special">Special</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -340,7 +345,7 @@
                             </tr>
                             <tr class="sp">
                                 <td>
-                                    <label>Speed</label>
+                                    <label data-i18n="Speed">Speed</label>
                                 </td>
                                 <td>
                                     <input class="base" value="100" />
@@ -380,7 +385,7 @@
                     </div>
                     <div class="info-group info-selectors">
                         <div class="gen-specific g3 g4 g5 g6 g7 g8 g9">
-                            <label>Nature</label>
+                            <label data-i18n="Nature">Nature</label>
                             <select class="nature">
                                 <option value="Adamant">Adamant (+Atk, -SpA)</option>
                                 <option value="Bashful">Bashful</option>
@@ -410,7 +415,7 @@
                             </select>
                         </div>
                         <div class="gen-specific g3 g4 g5 g6 g7 g8 g9">
-                            <label>Ability</label>
+                            <label data-i18n="Ability">Ability</label>
                             <select class="ability terrain-trigger"></select>
                             <input hidden type="checkbox" title= "Is this ability active?" class="abilityToggle">
 									 <select hidden aria-label="Allies fainted" class="alliesFainted calc-trigger">
@@ -432,11 +437,11 @@
 
                         </div>
                         <div class="gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
-                            <label>Item</label>
+                            <label data-i18n="Item">Item</label>
                             <select class="item terrain-trigger"></select>
                         </div>
                         <div>
-                            <label>Status</label>
+                            <label data-i18n="Status">Status</label>
                             <select class="status">
                                 <option value="Healthy">Healthy</option>
                                 <option value="Poisoned">Poisoned</option>
@@ -466,13 +471,13 @@
                         </div>
                     </div>
                     <div class="info-group">
-                        <label>Current HP</label>
+                        <label data-i18n="Current HP">Current HP</label>
                         <input class="current-hp" value="341" />/<span class="max-hp">341</span> (
                         <input class="percent-hp" value="100" />%)
 						 <!-- <input class="max calc-trigger btn-input" type="checkbox" id="maxL" /><label class="btn btn-wide gen-specific g8 g9" for="maxL" title="Use the corresponding Max Move?">Dynamax</label> -->
                         <br />
                         <br />
-                        Health <div class="hpbar"></div>
+                        <span data-i18n="Health">Health</span> <div class="hpbar"></div>
                     </div>
                     <div class="move1">
                         <select class="move-selector small-select"></select>
@@ -483,7 +488,7 @@
                             <option value="Special">Special</option>
                         </select>
                         <input class="move-crit visually-hidden" type="checkbox" id="critL1" />
-                        <label class="btn crit-btn" for="critL1" title="Force this attack to be a critical hit?">Crit</label>
+                        <label class="btn crit-btn" for="critL1" title="Force this attack to be a critical hit?" data-i18n="Crit">Crit</label>
                         <input class="move-z visually-hidden" type="checkbox" id="zL1"/>
                         <label class="btn z-btn gen-specific g7" for="zL1" title="Make this attack a Z-move?">Z</label>
                         <select class="move-hits hide">
@@ -517,7 +522,7 @@
                             <option value="Special">Special</option>
                         </select>
                         <input class="move-crit visually-hidden" type="checkbox" id="critL2" />
-                        <label class="btn crit-btn" for="critL2" title="Force this attack to be a critical hit?">Crit</label>
+                        <label class="btn crit-btn" for="critL2" title="Force this attack to be a critical hit?" data-i18n="Crit">Crit</label>
                         <input class="move-z visually-hidden" type="checkbox" id="zL2"/>
                         <label class="btn z-btn gen-specific g7" for="zL2" title="Make this attack a Z-move?">Z</label>
                         <select class="move-hits hide">
@@ -551,7 +556,7 @@
                             <option value="Special">Special</option>
                         </select>
                         <input class="move-crit visually-hidden" type="checkbox" id="critL3" />
-                        <label class="btn crit-btn" for="critL3" title="Force this attack to be a critical hit?">Crit</label>
+                        <label class="btn crit-btn" for="critL3" title="Force this attack to be a critical hit?" data-i18n="Crit">Crit</label>
                         <input class="move-z visually-hidden" type="checkbox" id="zL3"/>
                         <label class="btn z-btn gen-specific g7" for="zL3" title="Make this attack a Z-move?">Z</label>
                         <select class="move-hits hide">
@@ -585,7 +590,7 @@
                             <option value="Special">Special</option>
                         </select>
                         <input class="move-crit visually-hidden" type="checkbox" id="critL4" />
-                        <label class="btn crit-btn" for="critL4" title="Force this attack to be a critical hit?">Crit</label>
+                        <label class="btn crit-btn" for="critL4" title="Force this attack to be a critical hit?" data-i18n="Crit">Crit</label>
                         <input class="move-z visually-hidden" type="checkbox" id="zL4"/>
                         <label class="btn z-btn gen-specific g7" for="zL4" title="Make this attack a Z-move?">Z</label>
                         <select class="move-hits hide">
@@ -621,23 +626,23 @@
                 <div class="panel-body">
                     <div class="gen-specific g3 g4 g5 g6 g7 g8 g9" style="width: 10.6em; margin: 0 auto 5px;" title="Select the battle format.">
                         <input class="visually-hidden" type="radio" name="format" value="Singles" id="singles-format" />
-                        <label class="btn btn-left" for="singles-format">Singles</label>
+                        <label class="btn btn-left" for="singles-format" data-i18n="Singles">Singles</label>
                         <input class="visually-hidden" type="radio" name="format" value="Doubles" id="doubles-format" />
-                        <label class="btn btn-right" for="doubles-format">Doubles</label>
+                        <label class="btn btn-right" for="doubles-format" data-i18n="Doubles">Doubles</label>
                     </div>
                     <hr class="gen-specific g6 g7 g8 g9" />
                     <div class="gen-specific g3 g4 g5 g6 g7 g8 g9" style="width: 22.2em; margin: 5px auto;" title="Select the current weather condition.">
                         <input class="visually-hidden" type="radio" name="weather" value="" id="clear" checked="checked" />
-                        <label class="btn btn-small btn-left" for="clear">None</label>
+                        <label class="btn btn-small btn-left" for="clear" data-i18n="None">None</label>
                         <input class="visually-hidden" type="radio" name="weather" value="Sun" id="sun" />
-                        <label class="btn btn-small btn-mid" for="sun">Sun</label>
+                        <label class="btn btn-small btn-mid" for="sun" data-i18n="Sun">Sun</label>
                         <input class="visually-hidden" type="radio" name="weather" value="Rain" id="rain" />
-                        <label class="btn btn-small btn-mid" for="rain">Rain</label>
+                        <label class="btn btn-small btn-mid" for="rain" data-i18n="Rain">Rain</label>
                         <input class="visually-hidden" type="radio" name="weather" value="Sand" id="sand" />
-                        <label class="btn btn-small btn-mid" for="sand">Sand</label>
+                        <label class="btn btn-small btn-mid" for="sand" data-i18n="Sand">Sand</label>
                         <span class="gen-specific g3 g4 g5 g6 g7 g8">
                             <input class="visually-hidden" type="radio" name="weather" value="Hail" id="hail" />
-                            <label class="btn btn-small btn-right" for="hail">Hail</label>
+                            <label class="btn btn-small btn-right" for="hail" data-i18n="Hail">Hail</label>
                         </span>
                         <span class="gen-specific g9">
                             <input class="visually-hidden" type="radio" name="weather" value="Snow" id="snow" />
@@ -654,35 +659,35 @@
                     </div> -->
                     <div class="gen-specific g2 hide" style="width: 17.8em; margin: 0 auto 5px;" title="Select the current weather condition.">
                         <input class="visually-hidden" type="radio" name="gscWeather" value="" id="gscClear" checked="checked" />
-                        <label class="btn btn-small btn-left" for="gscClear">None</label>
+                        <label class="btn btn-small btn-left" for="gscClear" data-i18n="None">None</label>
                         <input class="visually-hidden" type="radio" name="gscWeather" value="Sun" id="gscSun" />
-                        <label class="btn btn-small btn-mid" for="gscSun">Sun</label>
+                        <label class="btn btn-small btn-mid" for="gscSun" data-i18n="Sun">Sun</label>
                         <input class="visually-hidden" type="radio" name="gscWeather" value="Rain" id="gscRain" />
-                        <label class="btn btn-small btn-mid" for="gscRain">Rain</label>
+                        <label class="btn btn-small btn-mid" for="gscRain" data-i18n="Rain">Rain</label>
                         <input class="visually-hidden" type="radio" name="gscWeather" value="Sand" id="gscSand" />
-                        <label class="btn btn-small btn-right" for="gscSand">Sand</label>
+                        <label class="btn btn-small btn-right" for="gscSand" data-i18n="Sand">Sand</label>
                     </div>
                     <div class="gen-specific g5 g6 g7 g8 g9" style="width: 22.2em; margin: 5px auto; display: inline-block;">
                         <span hidden id="magicRoomInstruction">Is Magic Room in effect?</span>
                         <span hidden id="wonderRoomInstruction">Is Wonder Room in effect?</span>
                         <input aria-describedby="magicRoomInstruction" class="visually-hidden" type="checkbox" id="magicroom" />
-                        <label class="btn btn-xxxwide btn-left" for="magicroom">Magic Room</label>
+                        <label class="btn btn-xxxwide btn-left" for="magicroom" data-i18n="Magic Room">Magic Room</label>
                         <input aria-describedby="wonderRoomInstruction" class="visually-hidden" type="checkbox" id="wonderroom" />
-                        <label class="btn btn-xxxwide btn-right" for="wonderroom">Wonder Room</label>
+                        <label class="btn btn-xxxwide btn-right" for="wonderroom" data-i18n="Wonder Room">Wonder Room</label>
                     </div>
                     <div class="gen-specific g4 g5 g6 g7 g8 g9" style="width: 5.3em; margin: 5px auto;" title="Is gravity in effect?">
                         <input class="visually-hidden" type="checkbox" id="gravity" />
-                        <label class="btn" for="gravity">Gravity</label>
+                        <label class="btn" for="gravity" data-i18n="Gravity">Gravity</label>
                     </div>
                     <hr class="gen-specific g2 g3 g4 g5 g6 g7 g8 g9" />
                     <div class="btn-group gen-specific g4 g5 g6 g7 g8 g9">
                         <div class="left" title="Is Stealth Rock affecting this side of the field?">
                             <input class="visually-hidden" type="checkbox" id="srL" />
-                            <label class="btn btn-xwide" for="srL">Stealth Rock</label>
+                            <label class="btn btn-xwide" for="srL" data-i18n="Stealth Rock">Stealth Rock</label>
                         </div>
                         <div class="right" title="Is Stealth Rock affecting this side of the field?">
                             <input class="visually-hidden" type="checkbox" id="srR" />
-                            <label class="btn btn-xwide" for="srR">Stealth Rock</label>
+                            <label class="btn btn-xwide" for="srR" data-i18n="Stealth Rock">Stealth Rock</label>
                         </div>
                     </div>
 						 <div class="btn-group gen-specific g8">
@@ -704,11 +709,11 @@
                             <input class="visually-hidden" type="radio" name="spikesL" value="2" id="spikesL2" />
                             <label class="btn btn-xsmall btn-mid" for="spikesL2">2</label>
                             <input class="visually-hidden" type="radio" name="spikesL" value="3" id="spikesL3" />
-                            <label class="btn btn-wide btn-right" for="spikesL3">3 Spikes</label>
+                            <label class="btn btn-wide btn-right" for="spikesL3" data-i18n="Spikes">3 Spikes</label>
                         </div>
                         <div class="right" title="Are there Spikes on this side of the field?">
                             <input class="visually-hidden" type="radio" name="spikesR" value="3" id="spikesR3" />
-                            <label class="btn btn-wide btn-left" for="spikesR3">3 Spikes</label>
+                            <label class="btn btn-wide btn-left" for="spikesR3" data-i18n="Spikes">3 Spikes</label>
                             <input class="visually-hidden" type="radio" name="spikesR" value="2" id="spikesR2" />
                             <label class="btn btn-xsmall btn-mid" for="spikesR2">2</label>
                             <input class="visually-hidden" type="radio" name="spikesR" value="1" id="spikesR1" />
@@ -720,96 +725,96 @@
                     <div class="btn-group gen-specific g2">
                         <div class="left" title="Are there Spikes on this side of the field?">
                             <input class="visually-hidden" type="checkbox" id="gscSpikesL" />
-                            <label class="btn" for="gscSpikesL">Spikes</label>
+                            <label class="btn" for="gscSpikesL" data-i18n="Spikes">Spikes</label>
                         </div>
                         <div class="right" title="Are there Spikes on this side of the field?">
                             <input class="visually-hidden" type="checkbox" id="gscSpikesR" />
-                            <label class="btn" for="gscSpikesR">Spikes</label>
+                            <label class="btn" for="gscSpikesR" data-i18n="Spikes">Spikes</label>
                         </div>
                     </div>
                     <div class="btn-group">
                         <div class="left" title="Is this Pok&eacute;mon protected by Reflect and/or Light Screen?">
                             <input class="visually-hidden" type="checkbox" id="reflectL" />
-                            <label class="btn btn-left" for="reflectL">Reflect</label>
+                            <label class="btn btn-left" for="reflectL" data-i18n="Reflect">Reflect</label>
                             <input class="visually-hidden" type="checkbox" id="lightScreenL" />
-                            <label class="btn btn-xwide btn-right" for="lightScreenL">Light Screen</label>
+                            <label class="btn btn-xwide btn-right" for="lightScreenL" data-i18n="Light Screen">Light Screen</label>
                         </div>
                         <div class="right" title="Is this Pok&eacute;mon protected by Reflect and/or Light Screen?">
                             <input class="visually-hidden" type="checkbox" id="lightScreenR" />
-                            <label class="btn btn-xwide btn-left" for="lightScreenR">Light Screen</label>
+                            <label class="btn btn-xwide btn-left" for="lightScreenR" data-i18n="Light Screen">Light Screen</label>
                             <input class="visually-hidden" type="checkbox" id="reflectR" />
-                            <label class="btn btn-right" for="reflectR">Reflect</label>
+                            <label class="btn btn-right" for="reflectR" data-i18n="Reflect">Reflect</label>
                         </div>
                     </div>
                     <div class="btn-group gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
                         <div class="left" title="Is this Pok&eacute;mon protected?">
                             <input class="visually-hidden" type="checkbox" id="protectL" />
-                            <label class="btn btn-wide" for="protectL">Protect</label>
+                            <label class="btn btn-wide" for="protectL" data-i18n="Protect">Protect</label>
                         </div>
                         <div class="right" title="Is this Pok&eacute;mon protected?">
                             <input class="visually-hidden" type="checkbox" id="protectR" />
-                            <label class="btn btn-wide" for="protectR">Protect</label>
+                            <label class="btn btn-wide" for="protectR" data-i18n="Protect">Protect</label>
                         </div>
                     </div>
                     <div class="btn-group">
                         <div class="left" title="Has this Pok&eacute;mon been affected by Leech Seed?">
                             <input class="visually-hidden" type="checkbox" id="leechSeedL" />
-                            <label class="btn btn-wide" for="leechSeedL">Leech Seed</label>
+                            <label class="btn btn-wide" for="leechSeedL" data-i18n="Leech Seed">Leech Seed</label>
                         </div>
                         <div class="right" title="Has this Pok&eacute;mon been affected by Leech Seed?">
                             <input class="visually-hidden" type="checkbox" id="leechSeedR" />
-                            <label class="btn btn-wide" for="leechSeedR">Leech Seed</label>
+                            <label class="btn btn-wide" for="leechSeedR" data-i18n="Leech Seed">Leech Seed</label>
                         </div>
                     </div>
                     <div class="btn-group gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
                         <div class="left" title="Has this Pok&eacute;mon been revealed with Foresight or Odor Sleuth?">
                             <input class="visually-hidden" type="checkbox" id="foresightL" />
-                            <label class="btn btn-wide" for="foresightL">Foresight</label>
+                            <label class="btn btn-wide" for="foresightL" data-i18n="Foresight">Foresight</label>
                         </div>
                         <div class="right" title="Has this Pok&eacute;mon been revealed with Foresight or Odor Sleuth?">
                             <input class="visually-hidden" type="checkbox" id="foresightR" />
-                            <label class="btn btn-wide" for="foresightR">Foresight</label>
+                            <label class="btn btn-wide" for="foresightR" data-i18n="Foresight">Foresight</label>
                         </div>
                     </div>
                     <div class="btn-group gen-specific g3 g4 g5 g6 g7 g8 g9">
                         <div class="left" title="Has this Pok&eacute;mon's power been boosted by an ally's Helping Hand?">
                             <input class="visually-hidden" type="checkbox" id="helpingHandL" />
-                            <label class="btn btn-xxwide" for="helpingHandL">Helping Hand</label>
+                            <label class="btn btn-xxwide" for="helpingHandL" data-i18n="Helping Hand">Helping Hand</label>
                         </div>
                         <div class="right" title="Has this Pok&eacute;mon's power been boosted by an ally's Helping Hand?">
                             <input class="visually-hidden" type="checkbox" id="helpingHandR" />
-                            <label class="btn btn-xxwide" for="helpingHandR">Helping Hand</label>
+                            <label class="btn btn-xxwide" for="helpingHandR" data-i18n="Helping Hand">Helping Hand</label>
                         </div>
                     </div>
                     <div class="btn-group gen-specific g4 g5 g6 g7 g8 g9">
                         <div class="left" title="Has this Pok&eacute;mon's speed been boosted by Tailwind?">
                             <input class="visually-hidden" type="checkbox" id="tailwindL" />
-                            <label class="btn btn-xxwide" for="tailwindL">Tailwind</label>
+                            <label class="btn btn-xxwide" for="tailwindL" data-i18n="Tailwind">Tailwind</label>
                         </div>
                         <div class="right" title="Has this Pok&eacute;mon's speed been boosted by Tailwind?">
                             <input class="visually-hidden" type="checkbox" id="tailwindR" />
-                            <label class="btn btn-xxwide" for="tailwindR">Tailwind</label>
+                            <label class="btn btn-xxwide" for="tailwindR" data-i18n="Tailwind">Tailwind</label>
                         </div>
                     </div>
                     <tr class="gen-specific g4 g5 g6 g7 g8 g9">
                         <td><div class="left" title="Is the Pok&eacute;mon affected by an ally's Flower Gift?">
                             <div hidden id="selectFlowerGiftInstruction">Is the Pok&eacute;mon affected by an ally's Flower Gift?</div>
                             <input aria-describedby="selectFlowerGiftInstruction" class="visually-hidden calc-trigger" type="checkbox" id="flowerGiftL" />
-                            <label class="btn btn-xxwide" for="flowerGiftL">Flower Gift</label>
+                            <label class="btn btn-xxwide" for="flowerGiftL" data-i18n="Flower Gift">Flower Gift</label>
                         </div></td>
                         <td><div class="right" title="Is the Pok&eacute;mon affected by an ally's Flower Gift?">
                             <input aria-describedby="selectFlowerGiftInstruction" class="visually-hidden calc-trigger" type="checkbox" id="flowerGiftR" />
-                            <label class="btn btn-xxwide" for="flowerGiftR">Flower Gift</label>
+                            <label class="btn btn-xxwide" for="flowerGiftR" data-i18n="Flower Gift">Flower Gift</label>
                         </div></td>
                     </tr>
                     <div class="btn-group gen-specific g5 g6 g7 g8 g9">
                         <div class="left" title="Is the Pok&eacute;mon protected by an ally's Friend Guard?">
                             <input class="visually-hidden" type="checkbox" id="friendGuardL" />
-                            <label class="btn btn-xxwide" for="friendGuardL">Friend Guard</label>
+                            <label class="btn btn-xxwide" for="friendGuardL" data-i18n="Friend Guard">Friend Guard</label>
                         </div>
                         <div class="right" title="Is the Pok&eacute;mon protected by an ally's Friend Guard?">
                             <input class="visually-hidden" type="checkbox" id="friendGuardR" />
-                            <label class="btn btn-xxwide" for="friendGuardR">Friend Guard</label>
+                            <label class="btn btn-xxwide" for="friendGuardR" data-i18n="Friend Guard">Friend Guard</label>
                         </div>
                     </div>
                     <!-- <div class="btn-group gen-specific g7 g8 g9">
@@ -844,11 +849,11 @@
                         <div class="btn-group gen-specific g2 g3 g4 g5 g6 g7 g8 g9">
                             <div class="left" title="Is the defending Pok&eacute;mon switching out?">
                                 <input class="visually-hidden" type="checkbox" id="switchingL" />
-                                <label class="btn btn-xxwide" for="switchingL">Switching out</label>
+                                <label class="btn btn-xxwide" for="switchingL" data-i18n="Switching Out">Switching out</label>
                             </div>
                             <div class="right" title="Is the defending Pok&eacute;mon switching out?">
                                 <input class="visually-hidden" type="checkbox" id="switchingR" />
-                                <label class="btn btn-xxwide" for="switchingR">Switching out</label>
+                                <label class="btn btn-xxwide" for="switchingR" data-i18n="Switching Out">Switching out</label>
                             </div>
                     </div>
                 </div>
@@ -918,6 +923,7 @@
     <script type="text/javascript" src="./calc/result.js?"></script>
     <script type="text/javascript" src="./calc/adaptable.js?"></script>
     <script type="text/javascript" src="./calc/index.js?"></script>
+    <script type="text/javascript" src="./js/i18n.js?"></script>
     <script type="text/javascript" src="./js/shared_controls.js?"></script>
     <script type="text/javascript" src="./js/honkalculate_controls.js?"></script>
 

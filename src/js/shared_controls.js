@@ -69,6 +69,15 @@ function legacyStatToStat(st) {
 	}
 }
 
+// i18n: refresh static labels when language changes
+function refreshI18nLabels() {
+	$('[data-i18n]').each(function() {
+		var key = $(this).attr('data-i18n');
+		$(this).text(I18N.t('ui', key));
+	});
+}
+
+
 // input field validation
 var bounds = {
 	"level": [1, 100],
@@ -459,11 +468,11 @@ $(".move-selector").change(function () {
 		moveGroupObj.children(".move-hits").empty();
 		if (!isNaN(move.multihit)) {
 			for (var j = 1; j <= move.multihit; j++) {
-				moveGroupObj.children(".move-hits").append("<option value=" + j + ">" + j + " hits</option>");
+				moveGroupObj.children(".move-hits").append("<option value=" + j + ">" + j + " " + I18N.t('ui', 'hits') + "</option>");
 			}
 		} else {
 			for (var j = 1; j <= move.multihit[1]; j++) {
-				moveGroupObj.children(".move-hits").append("<option value=" + j + ">" + j + " hits</option>");
+				moveGroupObj.children(".move-hits").append("<option value=" + j + ">" + j + " " + I18N.t('ui', 'hits') + "</option>");
 			}
 		}
 		moveGroupObj.children(".move-hits").show();
@@ -507,7 +516,19 @@ $(".item").change(function () {
 	$(this).closest(".poke-info").find(".move-hits").val(moveHits);
 });
 
+var CUSTOM_POKEMMO_MONSTERS = [
+	'Pumpking-Phase1', 'Pumpking-Phase2', 'Pumpking-Phase3',
+	'Pumprince', 'Pumprincess', "Li'l Pump", 'Pumpaladin', 'Pumpmage', 'Pumpreaper', 'Pumpthief',
+	'QuestionQuestionQuestion', 'Giratina-PokeMMO', 'Nian', 'Jumpeon',
+	'Circuitree', 'Robosanta', 'Mountain Muncher', 'Botcracker', 'DEBUG_ST1000',
+];
+['Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',
+ 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark', 'Normal'].forEach(function(type) {
+	CUSTOM_POKEMMO_MONSTERS.push(type + ' Elfbot-Offensive', type + ' Elfbot-Defensive');
+});
+
 function smogonAnalysis(pokemonName) {
+	if (CUSTOM_POKEMMO_MONSTERS.indexOf(pokemonName) !== -1) return "";
 	// var generation = ["rb", "gs", "rs", "dp", "bw", "xy", "sm", "ss", "sv"][gen - 1];
 	var generation = ["rb", "gs", "rs", "dp", "bw", "xy", "sm", "ss", "bw"][gen - 1];
 	return "https://smogon.com/dex/" + generation + "/pokemon/" + pokemonName.toLowerCase() + "/";
@@ -526,7 +547,8 @@ $(".set-selector").change(function () {
 		}
 		pokeObj.find(".teraToggle").prop("checked", false);
 		pokeObj.find(".boostedStat").val("");
-		pokeObj.find(".analysis").attr("href", smogonAnalysis(pokemonName));
+		var analysisUrl = smogonAnalysis(pokemonName);
+		pokeObj.find(".analysis").attr("href", analysisUrl).closest("small").toggle(analysisUrl !== "");
 		pokeObj.find(".type1").val(pokemon.types[0]);
 		pokeObj.find(".type2").val(pokemon.types[1]);
 		pokeObj.find(".hp .base").val(pokemon.bs.hp);
@@ -1113,16 +1135,16 @@ $(".gen").change(function () {
 	$(".gen-specific.g" + gen).show();
 	$(".gen-specific").not(".g" + gen).hide();
 	$("input:radio[name='format']").change();
-	var typeOptions = getSelectOptions(Object.keys(typeChart));
+	var typeOptions = getSelectOptions(Object.keys(typeChart), false, undefined, 'types');
 	$("select.type1, select.move-type").find("option").remove().end().append(typeOptions);
-	$("select.teraType").find("option").remove().end().append(getSelectOptions(Object.keys(typeChart).slice(1)));
-	$("select.type2").find("option").remove().end().append("<option value=\"\">(none)</option>" + typeOptions);
-	var moveOptions = getSelectOptions(Object.keys(moves), true);
+	$("select.teraType").find("option").remove().end().append(getSelectOptions(Object.keys(typeChart).slice(1), false, undefined, 'types'));
+	$("select.type2").find("option").remove().end().append('<option value="">' + I18N.t('ui', '(none)') + '</option>' + typeOptions);
+	var moveOptions = getSelectOptions(Object.keys(moves), true, undefined, 'moves');
 	$("select.move-selector").find("option").remove().end().append(moveOptions);
-	var abilityOptions = getSelectOptions(abilities, true);
-	$("select.ability").find("option").remove().end().append("<option value=\"\">(other)</option>" + abilityOptions);
-	var itemOptions = getSelectOptions(items, true);
-	$("select.item").find("option").remove().end().append("<option value=\"\">(none)</option>" + itemOptions);
+	var abilityOptions = getSelectOptions(abilities, true, undefined, 'abilities');
+	$("select.ability").find("option").remove().end().append('<option value="">' + I18N.t('ui', '(other)') + '</option>' + abilityOptions);
+	var itemOptions = getSelectOptions(items, true, undefined, 'items');
+	$("select.item").find("option").remove().end().append('<option value="">' + I18N.t('ui', '(none)') + '</option>' + itemOptions);
 
 	$(".set-selector").val(getFirstValidSetOption().id);
 	$(".set-selector").change();
@@ -1207,30 +1229,288 @@ function getSetOptions(sets) {
 		});
 		setOptions.push({
 			pokemon: pokeName,
-			set: "Attack Blank Set",
-			text: pokeName + " (Attack Blank Set)",
+			set: I18N.t('ui', 'Attack Blank Set'),
+			text: pokeName + " (" + I18N.t('ui', 'Attack Blank Set') + ")",
 			id: pokeName + " (Attack Blank Set)"
 		});
 		setOptions.push({
 			pokemon: pokeName,
-			set: "Blank Set",
-			text: pokeName + " (Blank Set)",
+			set: I18N.t('ui', 'Blank Set'),
+			text: pokeName + " (" + I18N.t('ui', 'Blank Set') + ")",
 			id: pokeName + " (Blank Set)"
 		});
 	}
 	return setOptions;
 }
 
-function getSelectOptions(arr, sort, defaultOption) {
+function getSelectOptions(arr, sort, defaultOption, i18nCategory) {
 	if (sort) {
 		arr.sort();
 	}
 	var r = '';
 	for (var i = 0; i < arr.length; i++) {
-		r += '<option value="' + arr[i] + '" ' + (defaultOption === i ? 'selected' : '') + '>' + arr[i] + '</option>';
+		var display = i18nCategory ? I18N.t(i18nCategory, arr[i]) : arr[i];
+		// Handle star skills: "Thunderbolt☆" → translate base + "☆"
+		if (i18nCategory === 'moves' && display === arr[i] && arr[i].indexOf('☆') !== -1) {
+			var baseName = arr[i].replace('☆', '');
+			var baseTranslated = I18N.t('moves', baseName);
+			if (baseTranslated !== baseName) display = baseTranslated + '☆';
+		}
+		// Fallback to ui category for special entries like (No Move)
+		if (i18nCategory && display === arr[i]) {
+			var uiFallback = I18N.t('ui', arr[i]);
+			if (uiFallback !== arr[i]) display = uiFallback;
+		}
+		r += '<option value="' + arr[i] + '" ' + (defaultOption === i ? 'selected' : '') + '>' + display + '</option>';
 	}
 	return r;
 }
+// i18n: refresh nature dropdown display text
+function refreshNatureOptions() {
+	$('select.nature option').each(function() {
+		var englishName = $(this).val();
+		if (!englishName) return;
+		var translated = I18N.t('natures', englishName);
+		var originalText = $(this).attr('data-original') || $(this).text();
+		if (!$(this).attr('data-original')) {
+			$(this).attr('data-original', originalText);
+		}
+		var boostMatch = originalText.match(/\([\+\-].*\)/);
+		if (boostMatch) {
+			var boostText = boostMatch[0]
+				.replace(/Atk/g, I18N.t('ui', 'Atk'))
+				.replace(/Def/g, I18N.t('ui', 'Def'))
+				.replace(/SpA/g, I18N.t('ui', 'SpA'))
+				.replace(/SpD/g, I18N.t('ui', 'SpD'))
+				.replace(/Spe/g, I18N.t('ui', 'Spe'));
+			$(this).text(translated + ' ' + boostText);
+		} else {
+			$(this).text(translated);
+		}
+	});
+}
+
+// i18n: refresh status dropdown display text
+function refreshStatusOptions() {
+	$('select.status option').each(function() {
+		$(this).text(I18N.t('ui', $(this).val()));
+	});
+}
+
+// i18n: refresh move category dropdown display text
+function refreshMoveCatOptions() {
+	$('select.move-cat option').each(function() {
+		$(this).text(I18N.t('ui', $(this).val()));
+	});
+}
+
+// i18n: master function to refresh all translated dropdowns
+function refreshI18nDropdowns() {
+	if (!typeChart || !moves || !abilities || !items) return;
+
+	// Rebuild type dropdowns
+	var typeOptions = getSelectOptions(Object.keys(typeChart), false, undefined, 'types');
+	$("select.type1, select.move-type").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end().append(typeOptions).val(current);
+	});
+	$("select.type2").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end()
+			.append('<option value="">' + I18N.t('ui', '(none)') + '</option>' + typeOptions)
+			.val(current);
+	});
+	$("select.teraType").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end().append(getSelectOptions(Object.keys(typeChart).slice(1), false, undefined, 'types')).val(current);
+	});
+
+	// Rebuild move dropdowns
+	var moveOptions = getSelectOptions(Object.keys(moves), true, undefined, 'moves');
+	$("select.move-selector").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end().append(moveOptions).val(current);
+	});
+
+	// Rebuild ability dropdowns
+	var abilityOptions = getSelectOptions(abilities, true, undefined, 'abilities');
+	$("select.ability").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end()
+			.append('<option value="">' + I18N.t('ui', '(other)') + '</option>' + abilityOptions)
+			.val(current);
+	});
+
+	// Rebuild item dropdowns
+	var itemOptions = getSelectOptions(items, true, undefined, 'items');
+	$("select.item").each(function() {
+		var current = $(this).val();
+		$(this).find("option").remove().end()
+			.append('<option value="">' + I18N.t('ui', '(none)') + '</option>' + itemOptions)
+			.val(current);
+	});
+
+	refreshNatureOptions();
+	refreshStatusOptions();
+	refreshMoveCatOptions();
+	refreshMoveHitsOptions();
+	refreshStatDropsOptions();
+	refreshMetronomeOptions();
+	refreshGenderOptions();
+	refreshMoveResultHeaders();
+	refreshImportExportText();
+	refreshDarkThemeToggle();
+	refreshSetSelectors();
+}
+
+// i18n: refresh move-hits dropdown display text
+function refreshMoveHitsOptions() {
+	$('select.move-hits option').each(function() {
+		var val = $(this).val();
+		$(this).text(val + ' ' + I18N.t('ui', 'hits'));
+	});
+}
+
+// i18n: refresh stat-drops dropdown display text
+function refreshStatDropsOptions() {
+	var labels = {'1': 'Once', '2': 'Twice', '3': '3 times', '4': '4 times', '5': '5 times'};
+	$('select.stat-drops option').each(function() {
+		var key = labels[$(this).val()];
+		if (key) $(this).text(I18N.t('ui', key));
+	});
+}
+
+// i18n: refresh metronome dropdown display text
+function refreshMetronomeOptions() {
+	var labels = {'0': 'Never', '1': 'Once', '2': 'Twice', '3': '3 times', '4': '4 times', '5': '5 times'};
+	$('select.metronome option').each(function() {
+		var key = labels[$(this).val()];
+		if (key) $(this).text(I18N.t('ui', key));
+	});
+}
+
+// i18n: refresh gender dropdown display text
+function refreshGenderOptions() {
+	$('select.gender option').each(function() {
+		var val = $(this).text().trim();
+		if (val === 'Male' || val === '♂') {
+			$(this).text(I18N.t('ui', 'Male'));
+		} else if (val === 'Female' || val === '♀') {
+			$(this).text(I18N.t('ui', 'Female'));
+		}
+	});
+}
+
+// i18n: refresh move result header text
+function refreshMoveResultHeaders() {
+	$('#resultHeaderL').text(
+		I18N.t('ui', "Pokemon 1's Moves") + ' ' + I18N.t('ui', '(select one to show detailed results)')
+	);
+	$('#resultHeaderR').text(
+		I18N.t('ui', "Pokemon 2's Moves") + ' ' + I18N.t('ui', '(select one to show detailed results)')
+	);
+}
+
+// i18n: refresh import/export section text
+function refreshImportExportText() {
+	$('.import-name-text').each(function() {
+		if ($(this).val() === 'Custom Set' || $(this).attr('data-i18n-default')) {
+			$(this).attr('data-i18n-default', 'Custom Set');
+			$(this).val(I18N.t('ui', 'Custom Set'));
+		}
+	});
+}
+
+function refreshSetSelectors() {
+	$('.set-selector').each(function() {
+		var data = $(this).select2('data');
+		if (data) {
+			$(this).select2('data', data);
+		}
+	});
+}
+
+function refreshDarkThemeToggle() {
+	var btn = document.getElementById('dark-theme-toggle');
+	if (btn) {
+		var isDark = localStorage.getItem('darkTheme') === 'true';
+		btn.innerText = isDark ? I18N.t('ui', 'Click for Light Theme') : I18N.t('ui', 'Click for Dark Theme');
+	}
+}
+
+
+// i18n: post-process damage result text for translation
+function translateResultText(text) {
+	if (I18N.getCurrentLang() === 'en') return text;
+
+	// Replace stat abbreviations first (most specific with word boundaries)
+	text = text.replace(/\bAtk\b/g, I18N.t('ui', 'Attack'));
+	text = text.replace(/\bDef\b/g, I18N.t('ui', 'Defense'));
+	text = text.replace(/\bSpA\b/g, I18N.t('ui', 'Sp. Atk'));
+	text = text.replace(/\bSpD\b/g, I18N.t('ui', 'Sp. Def'));
+	text = text.replace(/\bSpe\b/g, I18N.t('ui', 'Speed'));
+
+	// Build sorted name lists (longest first to avoid partial matches)
+	var pokeNames = Object.keys(pokedex).sort(function(a, b) { return b.length - a.length; });
+	for (var i = 0; i < pokeNames.length; i++) {
+		var zh = I18N.t('pokemon', pokeNames[i]);
+		if (zh !== pokeNames[i]) {
+			text = text.split(pokeNames[i]).join(zh);
+		}
+	}
+
+	// Replace move names (from current gen's move list)
+	if (moves) {
+		var moveNames = Object.keys(moves).sort(function(a, b) { return b.length - a.length; });
+		for (var i = 0; i < moveNames.length; i++) {
+			var moveName = moveNames[i];
+			var zh;
+			// Handle star skills: "Thunderbolt☆" → translate base + "☆"
+			if (moveName.indexOf('☆') !== -1) {
+				var baseName = moveName.replace('☆', '');
+				zh = I18N.t('moves', baseName);
+				if (zh !== baseName) {
+					zh = zh + '☆';
+				} else {
+					continue;
+				}
+			} else {
+				zh = I18N.t('moves', moveName);
+				if (zh === moveName) continue;
+			}
+			text = text.split(moveName).join(zh);
+		}
+	}
+
+	// Replace item names
+	if (items) {
+		var itemArr = typeof items === 'object' && !Array.isArray(items) ? Object.keys(items) : items;
+		var itemNames = itemArr.slice().sort(function(a, b) { return b.length - a.length; });
+		for (var i = 0; i < itemNames.length; i++) {
+			var zh = I18N.t('items', itemNames[i]);
+			if (zh !== itemNames[i]) {
+				text = text.split(itemNames[i]).join(zh);
+			}
+		}
+	}
+
+	// Replace ability names
+	if (abilities) {
+		var abilityNames = abilities.slice().sort(function(a, b) { return b.length - a.length; });
+		for (var i = 0; i < abilityNames.length; i++) {
+			var zh = I18N.t('abilities', abilityNames[i]);
+			if (zh !== abilityNames[i]) {
+				text = text.split(abilityNames[i]).join(zh);
+			}
+		}
+	}
+
+	// Replace special move names not in moves data
+	text = text.split('(No Move)').join(I18N.t('ui', '(No Move)'));
+
+	return text;
+}
+
 var stickyMoves = (function () {
 	var lastClicked = 'resultMoveL1';
 	$(".result-move").click(function () {
@@ -1333,10 +1613,16 @@ function loadDefaultLists() {
 	$(".set-selector").select2({
 		formatResult: function (object) {
 			if ($("#randoms").prop("checked")) {
-				return object.pokemon;
+				return I18N.t('pokemon', object.pokemon);
 			} else {
-				return object.set ? ("&nbsp;&nbsp;&nbsp;" + object.set) : ("<b>" + object.text + "</b>");
+				return object.set
+					? ("&nbsp;&nbsp;&nbsp;" + object.set)
+					: ("<b>" + I18N.t('pokemon', object.text) + "</b>");
 			}
+		},
+		formatSelection: function (object) {
+			var name = I18N.t('pokemon', object.pokemon);
+			return object.set ? name + " (" + object.set + ")" : name;
 		},
 		query: function (query) {
 			var pageSize = 30;
@@ -1345,8 +1631,10 @@ function loadDefaultLists() {
 			for (var i = 0; i < options.length; i++) {
 				var option = options[i];
 				var pokeName = option.pokemon.toUpperCase();
+				var pokeNameZh = I18N.t('pokemon', option.pokemon).toUpperCase();
 				if (!query.term || query.term.toUpperCase().split(" ").every(function (term) {
-					return pokeName.indexOf(term) === 0 || pokeName.indexOf("-" + term) >= 0 || pokeName.indexOf(" " + term) >= 0;
+					return pokeName.indexOf(term) === 0 || pokeName.indexOf("-" + term) >= 0 || pokeName.indexOf(" " + term) >= 0
+						|| pokeNameZh.indexOf(term) >= 0;
 				})) {
 					if ($("#randoms").prop("checked")) {
 						if (option.id) results.push(option);
@@ -1380,7 +1668,8 @@ function allPokemon(selector) {
 function loadCustomList(id) {
 	$("#" + id + " .set-selector").select2({
 		formatResult: function (set) {
-			return (set.nickname ? set.pokemon + " (" + set.nickname + ")" : set.id);
+			var displayName = I18N.t('pokemon', set.pokemon);
+			return (set.nickname ? displayName + " (" + set.nickname + ")" : set.id);
 		},
 		query: function (query) {
 			var pageSize = 30;
@@ -1423,13 +1712,30 @@ $(document).ready(function () {
 	$(".move-selector").select2({
 		dropdownAutoWidth: true,
 		matcher: function (term, text) {
-			// 2nd condition is for Hidden Power
-			return text.toUpperCase().indexOf(term.toUpperCase()) === 0 || text.toUpperCase().indexOf(" " + term.toUpperCase()) >= 0;
+			var termUpper = term.toUpperCase();
+			var textUpper = text.toUpperCase();
+			// Match English (2nd condition is for Hidden Power)
+			if (textUpper.indexOf(termUpper) === 0 || textUpper.indexOf(" " + termUpper) >= 0) return true;
+			// Match Chinese translation
+			var zhText = I18N.t('moves', text);
+			if (zhText !== text && zhText.toUpperCase().indexOf(termUpper) >= 0) return true;
+			return false;
 		}
 	});
 	$(".set-selector").val(getFirstValidSetOption().id);
 	$(".set-selector").change();
 	$(".terrain-trigger").bind("change keyup", getTerrainEffects);
+
+	// Language selector
+	$('#lang-selector').val(I18N.getCurrentLang());
+	$('#lang-selector').change(function() {
+		localStorage.setItem('pokemmo-calc-lang', $(this).val());
+		location.reload();
+	});
+
+	// Apply i18n translations to static labels and dropdowns
+	refreshI18nLabels();
+	refreshI18nDropdowns();
 });
 
 /* Click-to-copy function */

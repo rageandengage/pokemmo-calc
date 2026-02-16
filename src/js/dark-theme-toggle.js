@@ -15,7 +15,13 @@
 */
 var prefersDarkTheme = localStorage.getItem('darkTheme') ? localStorage.getItem('darkTheme') === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
 var darkThemeButton = document.getElementById('dark-theme-toggle');
-darkThemeButton.innerText = prefersDarkTheme ? 'Click for Light Theme' : 'Click for Dark Theme';
+function getDarkThemeLabel() {
+	return typeof I18N !== 'undefined' ? I18N.t('ui', 'Click for Dark Theme') : 'Click for Dark Theme';
+}
+function getLightThemeLabel() {
+	return typeof I18N !== 'undefined' ? I18N.t('ui', 'Click for Light Theme') : 'Click for Light Theme';
+}
+darkThemeButton.innerText = prefersDarkTheme ? getLightThemeLabel() : getDarkThemeLabel();
 if (prefersDarkTheme) {
 	var darkStyles = document.getElementById('dark-theme-styles');
 	if (darkStyles.disabled) {
@@ -34,7 +40,7 @@ function toggleTheme() {
 	darkStyles.disabled = !darkStyles.disabled;
 
 	localStorage.setItem('darkTheme', prefersDarkTheme);
-	darkThemeButton.innerText = prefersDarkTheme ? 'Click for Light Theme' : 'Click for Dark Theme';
+	darkThemeButton.innerText = prefersDarkTheme ? getLightThemeLabel() : getDarkThemeLabel();
 }
 
 darkThemeButton.addEventListener('click', toggleTheme);

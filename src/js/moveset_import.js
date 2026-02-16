@@ -1,5 +1,5 @@
 function placeBsBtn() {
-	var importBtn = "<button id='import' class='bs-btn bs-btn-default'>Import</button>";
+	var importBtn = "<button id='import' class='bs-btn bs-btn-default'>" + I18N.t('ui', 'Import') + "</button>";
 	$("#import-1_wrapper").append(importBtn);
 
 	$("#import.bs-btn").click(function () {

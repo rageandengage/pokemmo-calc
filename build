@@ -65,6 +65,9 @@ if (process.argv[2] !== 'view') {
 	require('child_process').execSync('npm --prefix calc/ run compile', { stdio: 'inherit' });
 }
 
+// Generate i18n JSON translation files (zh.json, zh-Hant.json) into src/js/data/i18n/
+require('child_process').execSync('node scripts/build-i18n.js', { stdio: 'inherit' });
+
 cpdir('src', 'dist');
 cpdir('calc/dist', 'dist/calc');
 makeCachebuster('dist/honkalculate.template.html', 'dist/honkalculate.html');

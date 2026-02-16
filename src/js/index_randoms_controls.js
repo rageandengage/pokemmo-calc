@@ -1,3 +1,18 @@
+function translateMoveName(name) {
+	// Handle star skills: "Thunderbolt☆" → translate "Thunderbolt" + "☆"
+	var starSuffix = '';
+	if (name.indexOf('☆') !== -1) {
+		starSuffix = '☆';
+		name = name.replace('☆', '');
+	}
+	var t = I18N.t('moves', name);
+	if (t === name) {
+		var ui = I18N.t('ui', name);
+		if (ui !== name) t = ui;
+	}
+	return (t + starSuffix).replace("Hidden Power", "HP");
+}
+
 $("#p2 .ability").bind("keyup change", function () {
 	autosetWeather($(this).val(), 1);
 	autosetTerrain($(this).val(), 1);
@@ -56,7 +71,7 @@ function performCalculations() {
 		p1.maxDamages.sort(function (firstMove, secondMove) {
 			return secondMove.maxDamage - firstMove.maxDamage;
 		});
-		$(resultLocations[0][i].move + " + label").text(p1.moves[i].name.replace("Hidden Power", "HP"));
+		$(resultLocations[0][i].move + " + label").text(translateMoveName(p1.moves[i].name));
 		$(resultLocations[0][i].damage).text(result.moveDesc(notation));
 
 		// P2
@@ -70,7 +85,7 @@ function performCalculations() {
 		p2.maxDamages.sort(function (firstMove, secondMove) {
 			return secondMove.maxDamage - firstMove.maxDamage;
 		});
-		$(resultLocations[1][i].move + " + label").text(p2.moves[i].name.replace("Hidden Power", "HP"));
+		$(resultLocations[1][i].move + " + label").text(translateMoveName(p2.moves[i].name));
 		$(resultLocations[1][i].damage).text(result.moveDesc(notation));
 
 		// BOTH
@@ -93,8 +108,8 @@ function performCalculations() {
 	}
 	bestResult.prop("checked", true);
 	bestResult.change();
-	$("#resultHeaderL").text(p1.name + "'s Moves (select one to show detailed results)");
-	$("#resultHeaderR").text(p2.name + "'s Moves (select one to show detailed results)");
+	$("#resultHeaderL").text(I18N.t('pokemon', p1.name) + I18N.t('ui', "'s Moves") + ' ' + I18N.t('ui', '(select one to show detailed results)'));
+	$("#resultHeaderR").text(I18N.t('pokemon', p2.name) + I18N.t('ui', "'s Moves") + ' ' + I18N.t('ui', '(select one to show detailed results)'));
 }
 
 $(".result-move").change(function () {
@@ -102,9 +117,9 @@ $(".result-move").change(function () {
 		var result = findDamageResult($(this));
 		if (result) {
 			var desc = result.fullDesc(notation, false);
-			if (desc.indexOf('--') === -1) desc += ' -- possibly the worst move ever';
-			$("#mainResult").text(desc);
-			$("#damageValues").text("Possible damage amounts: (" + displayDamageHits(result.damage) + ")");
+			if (desc.indexOf('--') === -1) desc += ' -- ' + I18N.t('ui', 'possibly the worst move ever');
+			$("#mainResult").text(translateResultText(desc));
+			$("#damageValues").text(I18N.t('ui', 'Possible damage amounts') + ": (" + displayDamageHits(result.damage) + ")");
 		}
 	}
 });

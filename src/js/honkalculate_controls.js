@@ -111,7 +111,7 @@ function performCalculations() {
 						data.push(attacker.moves[n].name.replace("Hidden Power", "HP"));
 						data.push(minPercentage + " - " + maxPercentage + "%");
 						data.push(minPixels + " - " + maxPixels + "px");
-						data.push(attacker.moves[n].bp === 0 ? 'nice move' : (result.kochance(false).text || 'possibly the worst move ever'));
+						data.push(attacker.moves[n].bp === 0 ? I18N.t('ui', 'nice move') : (result.kochance(false).text || I18N.t('ui', 'possibly the worst move ever')));
 					}
 				}
 				data.push((mode === "one-vs-all") ? defender.types[0] : attacker.types[0]);
