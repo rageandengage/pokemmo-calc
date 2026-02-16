@@ -347,7 +347,7 @@ export const MEGA_STONES: {[species: string]: string} = {
 const XY = BW.concat(
   [
     'Assault Gear', // backported (Assault Vest)
-    'Luminous Moss',
+    'Glowing Moss', // PokeMMO name for Luminous Moss
     'Safety Goggles',
     'Snowball',
     'Type Policy', // PokeMMO name for Weakness Policy

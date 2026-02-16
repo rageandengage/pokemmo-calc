@@ -284,7 +284,7 @@ const FLING_30 = new Set([
   'Prism Scale',
   'Ice Stone',
   'Gold Bottle Cap',
-  'Luminous Moss',
+  'Glowing Moss',
   'Eject Button',
   'Snowball',
   'Bottle Cap',
