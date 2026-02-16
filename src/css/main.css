@@ -219,7 +219,7 @@ th {
 }
 .field-info, .poke-import {
 	text-align: center;
-	width: 27.5em;
+	width: 30em;
 }
 .holder-0 {
 	position: absolute;
@@ -256,7 +256,7 @@ th {
 	width: 10em;
 }
 .btn-small {
-	width: 4em;
+	min-width: 5.5em;
 }
 .btn-xsmall {
 	width: 1em;

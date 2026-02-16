@@ -1724,6 +1724,10 @@ $(document).ready(function () {
 	});
 	$(".set-selector").val(getFirstValidSetOption().id);
 	$(".set-selector").change();
+	// Reset weather to none after initial load (ability auto-set may have changed it)
+	$("#clear").prop("checked", true);
+	lastAutoWeather = ["", ""];
+	lastManualWeather = "";
 	$(".terrain-trigger").bind("change keyup", getTerrainEffects);
 
 	// Language selector
