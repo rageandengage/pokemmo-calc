@@ -8495,6 +8495,367 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
 
 const SV: {[name: string]: SpeciesData} = extend(true, {}, SS, SV_PATCH, PLA_PATCH);
 
+// PokeMMO Custom Event Monsters (id >= 1000)
+// Pumpking: Sequential boss phases in Halloween events (Phase1 = id 1000, Phase2 = 1001, Phase3 = 1002)
+SV['Pumpking-Phase1'] = {
+  types: ['Ghost'],
+  bs: {hp: 225, at: 60, df: 525, sa: 180, sd: 525, sp: 90},
+  weightkg: 0,
+  abilities: {0: 'Strong Stomach'},
+  otherFormes: ['Pumpking-Phase2', 'Pumpking-Phase3'],
+};
+SV['Pumpking-Phase2'] = {
+  types: ['Ghost'],
+  bs: {hp: 240, at: 60, df: 485, sa: 150, sd: 485, sp: 115},
+  weightkg: 0,
+  abilities: {0: 'Entangling Vines'},
+  baseSpecies: 'Pumpking-Phase1',
+};
+SV['Pumpking-Phase3'] = {
+  types: ['Ghost'],
+  bs: {hp: 345, at: 100, df: 525, sa: 190, sd: 525, sp: 165},
+  weightkg: 0,
+  abilities: {0: 'Wither'},
+  baseSpecies: 'Pumpking-Phase1',
+};
+// Elfbots: Lower game IDs (1003-1018) are "-Offensive" (higher ATK/SPA),
+// higher game IDs (1029-1046) are "-Defensive" (higher DEF/SPD).
+// The game uses the same name for both; suffixes disambiguate them.
+SV['Fighting Elfbot-Offensive'] = {
+  types: ['Fighting'],
+  bs: {hp: 93, at: 150, df: 95, sa: 60, sd: 85, sp: 107},
+  weightkg: 0,
+  abilities: {0: 'Config: Defensive Programming'},
+  otherFormes: ['Fighting Elfbot-Defensive'],
+};
+SV['Flying Elfbot-Offensive'] = {
+  types: ['Flying'],
+  bs: {hp: 80, at: 120, df: 80, sa: 110, sd: 80, sp: 120},
+  weightkg: 0,
+  abilities: {0: 'Config: Polymorphic'},
+  otherFormes: ['Flying Elfbot-Defensive'],
+};
+SV['Poison Elfbot-Offensive'] = {
+  types: ['Poison'],
+  bs: {hp: 98, at: 120, df: 95, sa: 105, sd: 90, sp: 82},
+  weightkg: 0,
+  abilities: {0: 'Task: Vulnerability Scan'},
+  otherFormes: ['Poison Elfbot-Defensive'],
+};
+SV['Ground Elfbot-Offensive'] = {
+  types: ['Ground'],
+  bs: {hp: 115, at: 145, df: 110, sa: 60, sd: 85, sp: 75},
+  weightkg: 0,
+  abilities: {0: 'Config: Sandboxed'},
+  otherFormes: ['Ground Elfbot-Defensive'],
+};
+SV['Rock Elfbot-Offensive'] = {
+  types: ['Rock'],
+  bs: {hp: 110, at: 140, df: 130, sa: 60, sd: 80, sp: 70},
+  weightkg: 0,
+  abilities: {0: 'Config: Fail-safe'},
+  otherFormes: ['Rock Elfbot-Defensive'],
+};
+SV['Bug Elfbot-Offensive'] = {
+  types: ['Bug'],
+  bs: {hp: 100, at: 130, df: 120, sa: 60, sd: 85, sp: 95},
+  weightkg: 0,
+  abilities: {0: 'Config: Row Hammering'},
+  otherFormes: ['Bug Elfbot-Defensive'],
+};
+SV['Ghost Elfbot-Offensive'] = {
+  types: ['Ghost'],
+  bs: {hp: 90, at: 60, df: 90, sa: 145, sd: 95, sp: 110},
+  weightkg: 0,
+  abilities: {0: 'Task: Backup'},
+  otherFormes: ['Ghost Elfbot-Defensive'],
+};
+SV['Steel Elfbot-Offensive'] = {
+  types: ['Steel'],
+  bs: {hp: 115, at: 120, df: 140, sa: 59, sd: 85, sp: 71},
+  weightkg: 0,
+  abilities: {0: 'Task: Refresh'},
+  otherFormes: ['Steel Elfbot-Defensive'],
+};
+SV['Fire Elfbot-Offensive'] = {
+  types: ['Fire'],
+  bs: {hp: 80, at: 120, df: 80, sa: 130, sd: 80, sp: 100},
+  weightkg: 0,
+  abilities: {0: 'Startup: Sunny Day'},
+  otherFormes: ['Fire Elfbot-Defensive'],
+};
+SV['Water Elfbot-Offensive'] = {
+  types: ['Water'],
+  bs: {hp: 150, at: 60, df: 85, sa: 115, sd: 100, sp: 80},
+  weightkg: 0,
+  abilities: {0: 'Startup: Rain Dance'},
+  otherFormes: ['Water Elfbot-Defensive'],
+};
+SV['Grass Elfbot-Offensive'] = {
+  types: ['Grass'],
+  bs: {hp: 120, at: 58, df: 115, sa: 110, sd: 115, sp: 72},
+  weightkg: 0,
+  abilities: {0: 'Config: Inverted Logic'},
+  otherFormes: ['Grass Elfbot-Defensive'],
+};
+SV['Electric Elfbot-Offensive'] = {
+  types: ['Electric'],
+  bs: {hp: 90, at: 60, df: 80, sa: 140, sd: 90, sp: 130},
+  weightkg: 0,
+  abilities: {0: 'Config: Overclocked'},
+  otherFormes: ['Electric Elfbot-Defensive'],
+};
+SV['Psychic Elfbot-Offensive'] = {
+  types: ['Psychic'],
+  bs: {hp: 75, at: 60, df: 75, sa: 155, sd: 110, sp: 115},
+  weightkg: 0,
+  abilities: {0: 'Config: Backdoor Access'},
+  otherFormes: ['Psychic Elfbot-Defensive'],
+};
+SV['Ice Elfbot-Offensive'] = {
+  types: ['Ice'],
+  bs: {hp: 90, at: 60, df: 75, sa: 145, sd: 115, sp: 105},
+  weightkg: 0,
+  abilities: {0: 'Startup: Snowstorm'},
+  otherFormes: ['Ice Elfbot-Defensive'],
+};
+SV['Dragon Elfbot-Offensive'] = {
+  types: ['Dragon'],
+  bs: {hp: 84, at: 125, df: 80, sa: 120, sd: 90, sp: 91},
+  weightkg: 0,
+  abilities: {0: 'Startup: Optimize'},
+  otherFormes: ['Dragon Elfbot-Defensive'],
+};
+SV['Dark Elfbot-Offensive'] = {
+  types: ['Dark'],
+  bs: {hp: 100, at: 125, df: 90, sa: 100, sd: 90, sp: 85},
+  weightkg: 0,
+  abilities: {0: 'Task: Augmentation'},
+  otherFormes: ['Dark Elfbot-Defensive'],
+};
+SV['Pumprince'] = {
+  types: ['Ghost'],
+  bs: {hp: 140, at: 100, df: 120, sa: 100, sd: 120, sp: 110},
+  weightkg: 0,
+  abilities: {0: 'Oblivious'},
+};
+SV['Pumprincess'] = {
+  types: ['Ghost'],
+  bs: {hp: 105, at: 90, df: 110, sa: 145, sd: 110, sp: 120},
+  weightkg: 0,
+  abilities: {0: 'Trace'},
+};
+SV["Li'l Pump"] = {
+  types: ['Ghost', 'Fire'],
+  bs: {hp: 70, at: 175, df: 70, sa: 175, sd: 70, sp: 998},
+  weightkg: 0,
+  abilities: {0: 'Aftermath'},
+};
+SV['QuestionQuestionQuestion'] = {
+  types: ['Rock'],
+  bs: {hp: 80, at: 95, df: 120, sa: 95, sd: 60, sp: 50},
+  weightkg: 0,
+  abilities: {0: 'Levitate'},
+};
+SV['Giratina-PokeMMO'] = {
+  types: ['Ghost', 'Dragon'],
+  bs: {hp: 220, at: 140, df: 200, sa: 140, sd: 200, sp: 110},
+  weightkg: 0,
+  abilities: {0: 'Levitate'},
+};
+SV['Nian'] = {
+  types: ['Dark'],
+  bs: {hp: 400, at: 90, df: 300, sa: 80, sd: 300, sp: 90},
+  weightkg: 0,
+  abilities: {0: 'Intimidate'},
+};
+SV['Jumpeon'] = {
+  types: ['Flying'],
+  bs: {hp: 190, at: 90, df: 175, sa: 90, sd: 175, sp: 999},
+  weightkg: 0,
+  abilities: {0: 'Serene Grace'},
+};
+SV['Circuitree'] = {
+  types: ['Electric'],
+  bs: {hp: 180, at: 100, df: 160, sa: 180, sd: 160, sp: 130},
+  weightkg: 0,
+  abilities: {0: 'Lag Compensation'},
+};
+SV['Robosanta'] = {
+  types: ['Fighting'],
+  bs: {hp: 180, at: 170, df: 200, sa: 100, sd: 140, sp: 120},
+  weightkg: 0,
+  abilities: {0: 'Lag Compensation'},
+};
+SV['Mountain Muncher'] = {
+  types: ['Dark'],
+  bs: {hp: 320, at: 130, df: 135, sa: 120, sd: 135, sp: 70},
+  weightkg: 0,
+  abilities: {0: 'Intrusion Detection'},
+};
+SV['Fighting Elfbot-Defensive'] = {
+  types: ['Fighting'],
+  bs: {hp: 108, at: 120, df: 110, sa: 50, sd: 95, sp: 107},
+  weightkg: 0,
+  abilities: {0: 'Startup: Power Boost'},
+  baseSpecies: 'Fighting Elfbot-Offensive',
+};
+SV['Flying Elfbot-Defensive'] = {
+  types: ['Flying'],
+  bs: {hp: 95, at: 100, df: 95, sa: 90, sd: 90, sp: 120},
+  weightkg: 0,
+  abilities: {0: 'Startup: Tailwind'},
+  baseSpecies: 'Flying Elfbot-Offensive',
+};
+SV['Poison Elfbot-Defensive'] = {
+  types: ['Poison'],
+  bs: {hp: 108, at: 105, df: 105, sa: 90, sd: 100, sp: 82},
+  weightkg: 0,
+  abilities: {0: 'Task: Viral Broadcast'},
+  baseSpecies: 'Poison Elfbot-Offensive',
+};
+SV['Ground Elfbot-Defensive'] = {
+  types: ['Ground'],
+  bs: {hp: 130, at: 115, df: 125, sa: 50, sd: 95, sp: 75},
+  weightkg: 0,
+  abilities: {0: 'Task: Patch Deployment'},
+  baseSpecies: 'Ground Elfbot-Offensive',
+};
+SV['Rock Elfbot-Defensive'] = {
+  types: ['Rock'],
+  bs: {hp: 120, at: 110, df: 140, sa: 50, sd: 100, sp: 70},
+  weightkg: 0,
+  abilities: {0: 'Startup: Sandstorm'},
+  baseSpecies: 'Rock Elfbot-Offensive',
+};
+SV['Bug Elfbot-Defensive'] = {
+  types: ['Bug'],
+  bs: {hp: 115, at: 105, df: 130, sa: 50, sd: 95, sp: 95},
+  weightkg: 0,
+  abilities: {0: 'Startup: Reflect'},
+  baseSpecies: 'Bug Elfbot-Offensive',
+};
+SV['Ghost Elfbot-Defensive'] = {
+  types: ['Ghost'],
+  bs: {hp: 100, at: 50, df: 100, sa: 125, sd: 105, sp: 110},
+  weightkg: 0,
+  abilities: {0: 'Startup: Safe Mode'},
+  baseSpecies: 'Ghost Elfbot-Offensive',
+};
+SV['Steel Elfbot-Defensive'] = {
+  types: ['Steel'],
+  bs: {hp: 125, at: 95, df: 150, sa: 49, sd: 100, sp: 71},
+  weightkg: 0,
+  abilities: {0: 'Config: Vulnerability Mitigation'},
+  baseSpecies: 'Steel Elfbot-Offensive',
+};
+SV['Fire Elfbot-Defensive'] = {
+  types: ['Fire'],
+  bs: {hp: 100, at: 100, df: 90, sa: 110, sd: 90, sp: 100},
+  weightkg: 0,
+  abilities: {0: 'Config: Thermal Insulation'},
+  baseSpecies: 'Fire Elfbot-Offensive',
+};
+SV['Water Elfbot-Defensive'] = {
+  types: ['Water'],
+  bs: {hp: 155, at: 50, df: 95, sa: 100, sd: 110, sp: 80},
+  weightkg: 0,
+  abilities: {0: 'Startup: Antivirus'},
+  baseSpecies: 'Water Elfbot-Offensive',
+};
+SV['Grass Elfbot-Defensive'] = {
+  types: ['Grass'],
+  bs: {hp: 130, at: 48, df: 120, sa: 100, sd: 120, sp: 72},
+  weightkg: 0,
+  abilities: {0: 'Startup: Maintenance'},
+  baseSpecies: 'Grass Elfbot-Offensive',
+};
+SV['Electric Elfbot-Defensive'] = {
+  types: ['Electric'],
+  bs: {hp: 100, at: 50, df: 90, sa: 115, sd: 105, sp: 130},
+  weightkg: 0,
+  abilities: {0: 'Task: Denial of Service'},
+  baseSpecies: 'Electric Elfbot-Offensive',
+};
+SV['Psychic Elfbot-Defensive'] = {
+  types: ['Psychic'],
+  bs: {hp: 90, at: 50, df: 85, sa: 125, sd: 125, sp: 115},
+  weightkg: 0,
+  abilities: {0: 'Startup: Special Boost'},
+  baseSpecies: 'Psychic Elfbot-Offensive',
+};
+SV['Ice Elfbot-Defensive'] = {
+  types: ['Ice'],
+  bs: {hp: 110, at: 50, df: 90, sa: 110, sd: 125, sp: 105},
+  weightkg: 0,
+  abilities: {0: 'Startup: Light Screen'},
+  baseSpecies: 'Ice Elfbot-Offensive',
+};
+SV['Dragon Elfbot-Defensive'] = {
+  types: ['Dragon'],
+  bs: {hp: 99, at: 110, df: 90, sa: 105, sd: 95, sp: 91},
+  weightkg: 0,
+  abilities: {0: 'Config: Factory Reset'},
+  baseSpecies: 'Dragon Elfbot-Offensive',
+};
+SV['Dark Elfbot-Defensive'] = {
+  types: ['Dark'],
+  bs: {hp: 110, at: 100, df: 100, sa: 95, sd: 100, sp: 85},
+  weightkg: 0,
+  abilities: {0: 'Task: Back-hack'},
+  baseSpecies: 'Dark Elfbot-Offensive',
+};
+SV['Normal Elfbot-Offensive'] = {
+  types: ['Normal'],
+  bs: {hp: 100, at: 100, df: 100, sa: 100, sd: 100, sp: 90},
+  weightkg: 0,
+  abilities: {0: 'Task: Refactor'},
+  otherFormes: ['Normal Elfbot-Defensive'],
+};
+SV['Normal Elfbot-Defensive'] = {
+  types: ['Normal'],
+  bs: {hp: 100, at: 100, df: 100, sa: 100, sd: 100, sp: 90},
+  weightkg: 0,
+  abilities: {0: 'Config: Reactive Programming'},
+  baseSpecies: 'Normal Elfbot-Offensive',
+};
+SV['Pumpaladin'] = {
+  types: ['Ghost', 'Steel'],
+  bs: {hp: 150, at: 165, df: 180, sa: 50, sd: 75, sp: 60},
+  weightkg: 0,
+  abilities: {0: 'Friend Guard'},
+};
+SV['Pumpmage'] = {
+  types: ['Ghost', 'Water'],
+  bs: {hp: 100, at: 50, df: 70, sa: 150, sd: 200, sp: 110},
+  weightkg: 0,
+  abilities: {0: 'Summon Storm'},
+};
+SV['Pumpreaper'] = {
+  types: ['Ghost', 'Dark'],
+  bs: {hp: 80, at: 180, df: 75, sa: 75, sd: 75, sp: 190},
+  weightkg: 0,
+  abilities: {0: 'Super Luck'},
+};
+SV['Botcracker'] = {
+  types: ['Rock'],
+  bs: {hp: 170, at: 170, df: 250, sa: 100, sd: 170, sp: 50},
+  weightkg: 0,
+  abilities: {0: 'Intrusion Detection'},
+};
+SV['Pumpthief'] = {
+  types: ['Ghost'],
+  bs: {hp: 90, at: 150, df: 85, sa: 110, sd: 85, sp: 160},
+  weightkg: 0,
+  abilities: {0: 'Rob the Rich'},
+};
+SV['DEBUG_ST1000'] = {
+  types: ['Normal', 'Ground'],
+  bs: {hp: 1000, at: 1000, df: 1000, sa: 1000, sd: 1000, sp: 1000},
+  weightkg: 0,
+  abilities: {0: 'Mold Breaker'},
+};
+
 export const SPECIES = [{}, RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
 
 export class Species implements I.Species {
