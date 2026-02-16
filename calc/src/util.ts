@@ -6,7 +6,7 @@ export function toID(text: any): ID {
   if (lcase === 'flabébé') {
     return 'flabebe' as ID;
   }
-  return lcase.replace(/[^a-z0-9]+/g, '') as ID;
+  return lcase.replace(/☆/g, 'star').replace(/[^a-z0-9]+/g, '') as ID;
 }
 
 export function error(err: boolean, msg: string) {
